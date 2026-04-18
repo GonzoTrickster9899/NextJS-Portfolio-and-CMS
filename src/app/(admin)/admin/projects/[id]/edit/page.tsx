@@ -1,0 +1,37 @@
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import ProjectForm from '@/components/admin/ProjectForm'
+import { prisma } from '@/lib/prisma'
+
+export const metadata: Metadata = { title: 'Edit Project' }
+
+export default async function EditProjectPage({
+  params,
+}: {
+  params: { id: string }
+}) {
+  const project = await prisma.project.findUnique({ where: { id: params.id } })
+  if (!project) notFound()
+
+  return (
+    <div className="max-w-2xl space-y-6">
+      <div className="flex items-center gap-3">
+        <Button asChild variant="ghost" size="icon" className="rounded-full">
+          <Link href="/admin/projects">
+            <ArrowLeft className="w-4 h-4" />
+          </Link>
+        </Button>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Edit Project</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">{project.title}</p>
+        </div>
+      </div>
+      <div className="glass-card rounded-2xl border border-border/50 p-6">
+        <ProjectForm project={project} />
+      </div>
+    </div>
+  )
+}

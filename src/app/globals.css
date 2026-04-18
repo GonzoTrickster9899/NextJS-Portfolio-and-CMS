@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Soft/Modern Light Theme ── */
+    --background: 30 20% 98%;
+    --foreground: 240 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+
+    /* Warm amber-rose primary */
+    --primary: 25 95% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 20% 94%;
+    --secondary-foreground: 240 10% 20%;
+
+    --muted: 30 15% 93%;
+    --muted-foreground: 240 5% 50%;
+
+    --accent: 340 80% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 30 20% 88%;
+    --input: 30 20% 88%;
+    --ring: 25 95% 58%;
+
+    --radius: 0.75rem;
+
+    /* Glass surfaces */
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+
+    /* Gradient stops */
+    --gradient-from: hsl(25, 95%, 90%);
+    --gradient-via: hsl(340, 80%, 92%);
+    --gradient-to: hsl(200, 60%, 92%);
+  }
+
+  .dark {
+    /* ── Soft/Modern Dark Theme ── */
+    --background: 240 15% 8%;
+    --foreground: 30 20% 96%;
+
+    --card: 240 12% 12%;
+    --card-foreground: 30 20% 96%;
+
+    --popover: 240 12% 12%;
+    --popover-foreground: 30 20% 96%;
+
+    --primary: 25 95% 62%;
+    --primary-foreground: 240 10% 8%;
+
+    --secondary: 240 10% 16%;
+    --secondary-foreground: 30 15% 88%;
+
+    --muted: 240 10% 16%;
+    --muted-foreground: 240 5% 55%;
+
+    --accent: 340 75% 62%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 10% 20%;
+    --input: 240 10% 20%;
+    --ring: 25 95% 62%;
+
+    /* Glass surfaces — dark */
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    /* Gradient stops — dark */
+    --gradient-from: hsl(25, 60%, 18%);
+    --gradient-via: hsl(340, 50%, 16%);
+    --gradient-to: hsl(200, 40%, 14%);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* ── Glass Card ── */
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* ── Gradient Text ── */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+
+  /* ── Mesh Background ── */
+  .mesh-bg {
+    background-image: 
+      radial-gradient(at 20% 20%, hsl(25, 95%, 88%) 0px, transparent 55%),
+      radial-gradient(at 80% 10%, hsl(340, 80%, 88%) 0px, transparent 50%),
+      radial-gradient(at 5% 80%, hsl(200, 60%, 88%) 0px, transparent 50%),
+      radial-gradient(at 90% 80%, hsl(25, 70%, 90%) 0px, transparent 45%);
+  }
+
+  .dark .mesh-bg {
+    background-image:
+      radial-gradient(at 20% 20%, hsl(25, 60%, 16%) 0px, transparent 55%),
+      radial-gradient(at 80% 10%, hsl(340, 50%, 14%) 0px, transparent 50%),
+      radial-gradient(at 5% 80%, hsl(200, 40%, 12%) 0px, transparent 50%),
+      radial-gradient(at 90% 80%, hsl(25, 50%, 14%) 0px, transparent 45%);
+  }
+
+  /* ── Section container ── */
+  .section-container {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ── Prose overrides for blog ── */
+  .prose-portfolio {
+    @apply prose prose-zinc dark:prose-invert max-w-none;
+    @apply prose-headings:font-bold prose-headings:tracking-tight;
+    @apply prose-a:text-primary prose-a:no-underline hover:prose-a:underline;
+    @apply prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none;
+    @apply prose-pre:bg-transparent prose-pre:p-0;
+    @apply prose-img:rounded-2xl;
+    @apply prose-blockquote:border-l-primary;
+  }
+}
+
+@layer utilities {
+  /* Noise texture overlay */
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}

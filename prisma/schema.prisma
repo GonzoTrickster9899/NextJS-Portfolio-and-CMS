@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ProjectCategory {
+  FRONTEND
+  BACKEND
+  FULLSTACK
+  DEVOPS
+  MOBILE
+  OTHER
+}
+
+model Project {
+  id          String          @id @default(cuid())
+  title       String
+  slug        String          @unique
+  description String          @db.Text
+  imageUrl    String
+  techStack   String[]
+  githubLink  String?
+  liveLink    String?
+  category    ProjectCategory @default(FULLSTACK)
+  isFeatured  Boolean         @default(false)
+  order       Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([slug])
+  @@index([isFeatured])
+  @@index([category])
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String    @db.Text
+  content     String    @db.Text
+  thumbnail   String?
+  published   Boolean   @default(false)
+  readingTime Int       @default(0)
+  views       Int       @default(0)
+  tags        String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+
+  @@index([slug])
+  @@index([published])
+  @@index([publishedAt])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+model Experience {
+  id          String   @id @default(cuid())
+  company     String
+  role        String
+  duration    String
+  description String   @db.Text
+  techStack   String[]
+  order       Int      @default(0)
+  isCurrent   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+model SiteConfig {
+  id          String  @id @default(cuid())
+  key         String  @unique
+  value       String  @db.Text
+  description String?
+
+  @@index([key])
+}
