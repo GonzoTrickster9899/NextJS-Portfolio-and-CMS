@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { uploadImage } from '@/lib/supabase/storage'
 
+/**
+ * Handle an authenticated multipart image upload and return the uploaded file URL.
+ *
+ * Validates that the requester is the admin identified by `process.env.ADMIN_EMAIL`, accepts a `file` and optional `folder` (`projects` default), enforces `folder` ∈ {`projects`, `blog`, `skills`}, restricts MIME types to JPEG/PNG/WebP/GIF/AVIF/SVG, and limits file size to 5 MB. Returns appropriate HTTP error responses for authentication, missing/invalid input, unsupported media type, oversized payload, or internal failures.
+ *
+ * @returns JSON with `{ url: string }` on success, or `{ error: string }` on failure; HTTP status codes reflect the error condition (401, 400, 415, 413, 500).
+ */
 export async function POST(req: NextRequest) {
   try {
     const supabase = await createClient()

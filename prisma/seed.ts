@@ -2,6 +2,11 @@ import { PrismaClient, ProjectCategory } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+/**
+ * Seed the database with sample experiences, site configuration entries, a project, and skills.
+ *
+ * Inserts initial records into the Prisma database for experiences, site configuration, projects, and skills;
+ * existing records are preserved by skipping duplicates. */
 async function main() {
   // ── Experiences ──────────────────────────────────────────────────────────────
   await prisma.experience.createMany({

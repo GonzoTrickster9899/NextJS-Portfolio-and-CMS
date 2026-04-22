@@ -12,6 +12,13 @@ interface Props {
   index?: number
 }
 
+/**
+ * Render a blog post card with animated entry, hover lift, thumbnail (or placeholder), tags, title, excerpt, and meta info.
+ *
+ * @param post - BlogPost data used to populate the card (expects at least `slug`, `title`, `thumbnail`, `tags`, `excerpt`, `publishedAt`, and `readingTime`)
+ * @param index - Optional zero-based index used to stagger the entrance animation delay
+ * @returns A JSX element representing the clickable blog post card
+ */
 export default function BlogCard({ post, index = 0 }: Props) {
   return (
     <motion.article

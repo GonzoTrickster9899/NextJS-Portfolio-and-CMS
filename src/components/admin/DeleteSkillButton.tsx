@@ -5,6 +5,14 @@ import { Trash2, Loader2 } from 'lucide-react'
 import { deleteSkill } from '@/lib/actions/skills'
 import { toast } from 'sonner'
 
+/**
+ * Render a compact icon-only delete button for a skill that requires a second click to confirm before deleting.
+ *
+ * The button enters a temporary confirmation state on first click (reverting after 3 seconds). While a delete is in progress the button is disabled and shows a spinner. On successful deletion a success toast is shown.
+ *
+ * @param id - The identifier of the skill to delete
+ * @returns The delete button React element
+ */
 export default function DeleteSkillButton({ id }: { id: string }) {
   const [isPending, startTransition] = useTransition()
   const [confirm, setConfirm] = useState(false)

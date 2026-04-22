@@ -19,6 +19,11 @@ const getSocialLinks = unstable_cache(
   { revalidate: 3600 }
 )
 
+/**
+ * Renders the site footer including brand, navigation links, social icons, and copyright year.
+ *
+ * @returns The footer React element containing a brand area, navigation links (Home, Portfolio, Blog, Contact), conditional external social links for GitHub/LinkedIn/Twitter when available, and the current year copyright line.
+ */
 export default async function Footer() {
   const social = await getSocialLinks()
   const year = new Date().getFullYear()

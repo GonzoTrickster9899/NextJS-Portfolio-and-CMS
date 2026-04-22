@@ -16,6 +16,13 @@ const NAV_LINKS = [
   { href: '/contact', label: 'Contact' },
 ]
 
+/**
+ * Renders a responsive, fixed navigation header with a logo, desktop links, a theme toggle, and a mobile menu.
+ *
+ * The header adds elevated "scrolled" styling when the page is scrolled past 20px and toggles a slide-down mobile menu.
+ *
+ * @returns The navbar React element to be rendered at the top of the page.
+ */
 export default function Navbar() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)

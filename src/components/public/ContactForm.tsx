@@ -20,6 +20,17 @@ const schema = z.object({
 })
 type FormData = z.infer<typeof schema>
 
+/**
+ * Render a contact form with schema-based validation and submission handling.
+ *
+ * The component validates fields using the defined schema, submits form data
+ * via POST to `/api/contact`, and manages local submission state.
+ * On successful submission it resets the form and displays a confirmation view;
+ * on failure it shows an error toast. The submit button is disabled while a
+ * submission is in progress.
+ *
+ * @returns A JSX element containing the contact form or a success confirmation view.
+ */
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)

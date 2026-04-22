@@ -11,6 +11,13 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600 // re-fetch config once per hour
 
+/**
+ * Loads contact-related site configuration keys from the database.
+ *
+ * Retrieves entries for `contact_email`, `contact_location`, and `contact_response_time` and returns them mapped by key.
+ *
+ * @returns An object mapping each found config key to its value (e.g. `{ contact_email: '...' }`); returns an empty object if none are found or if the query fails.
+ */
 async function getContactConfig() {
   try {
     const configs = await prisma.siteConfig.findMany({
@@ -22,6 +29,11 @@ async function getContactConfig() {
   }
 }
 
+/**
+ * Render the Contact page populated with site-configured contact details and a contact form.
+ *
+ * @returns A React element representing the contact page layout, including contact info items and the contact form.
+ */
 export default async function ContactPage() {
   const cfg = await getContactConfig()
 

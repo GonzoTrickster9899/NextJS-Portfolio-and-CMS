@@ -1,6 +1,17 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+/**
+ * Enforces access rules for admin and login routes, refreshes the Supabase session, and returns a response (possibly a redirect) with any updated auth cookies.
+ *
+ * Refreshes the Supabase session to keep authentication cookies alive, checks the request path and the authenticated user's email against `process.env.ADMIN_EMAIL`, and:
+ * - redirects non-admin users from `/admin/*` to `/login`
+ * - redirects admin users away from `/login` to `/admin`
+ * Any cookies set by the Supabase client are propagated onto the returned response.
+ *
+ * @param request - The incoming Next.js request used to read the URL and cookies
+ * @returns A NextResponse for the current request, or a redirect NextResponse when access rules require navigation to `/login` or `/admin`
+ */
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 

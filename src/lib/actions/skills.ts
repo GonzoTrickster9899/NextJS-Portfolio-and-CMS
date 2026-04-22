@@ -5,6 +5,11 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 
+/**
+ * Verifies that the current Supabase-authenticated user is the configured administrator.
+ *
+ * @throws Error('Unauthorized') if there is no authenticated user or the user's email does not match process.env.ADMIN_EMAIL
+ */
 async function assertAdmin() {
   const supabase = await createClient()
   const {
@@ -20,6 +25,12 @@ const SkillSchema = z.object({
   order: z.number().int().default(0),
 })
 
+/**
+ * Create a new skill from form data, validate the input, persist it, and revalidate relevant cache paths.
+ *
+ * @param formData - Form data with fields: `name` (string, 1–60 chars), `category` (one of FRONTEND | BACKEND | DATABASE | DEVOPS | TOOLS | LANGUAGES | MOBILE | OTHER), `iconUrl` (string URL or `''`), and `order` (integer)
+ * @returns `undefined` on success; if validation fails, an object `{ error: Record<string, string[]> }` mapping field names to validation messages
+ */
 export async function createSkill(formData: FormData) {
   await assertAdmin()
   const raw = {
@@ -35,6 +46,13 @@ export async function createSkill(formData: FormData) {
   revalidatePath('/admin/skills')
 }
 
+/**
+ * Updates an existing skill record with validated form input and revalidates relevant cache paths.
+ *
+ * @param id - The ID of the skill to update
+ * @param formData - Form data with fields: `name`, `category`, `iconUrl` (optional), and `order` (optional)
+ * @returns `{ error: Record<string, string[] | undefined> }` when validation fails; otherwise `undefined`
+ */
 export async function updateSkill(id: string, formData: FormData) {
   await assertAdmin()
   const raw = {
@@ -50,6 +68,12 @@ export async function updateSkill(id: string, formData: FormData) {
   revalidatePath('/admin/skills')
 }
 
+/**
+ * Delete a skill record by its ID and revalidate the homepage and admin skills cache paths.
+ *
+ * @param id - The skill `id` to delete
+ * @throws Error('Unauthorized') if the current user is not the configured admin
+ */
 export async function deleteSkill(id: string) {
   await assertAdmin()
   await prisma.skill.delete({ where: { id } })

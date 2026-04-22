@@ -8,6 +8,16 @@ async function assertAdmin() {
   if (!user || user.email !== process.env.ADMIN_EMAIL) throw new Error('Unauthorized')
 }
 
+/**
+ * Handles DELETE requests to remove a project by ID while enforcing admin authorization.
+ *
+ * @param _req - The incoming request object (unused).
+ * @param params - A promise resolving to route parameters; must include `id` of the project to delete.
+ * @returns A NextResponse containing JSON:
+ * - `{ success: true }` when the project was deleted successfully.
+ * - `{ error: 'Unauthorized' }` with status 401 when the requester is not the configured admin.
+ * - `{ error: 'Failed to delete project' }` with status 500 when deletion fails.
+ */
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }

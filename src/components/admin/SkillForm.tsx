@@ -34,6 +34,15 @@ interface Props {
   onSuccess?: () => void
 }
 
+/**
+ * Render a form for creating or editing a skill, including category selection, icon upload/URL, display order, and a live badge preview.
+ *
+ * Handles client-side icon validation (JPEG, PNG, WebP, GIF, AVIF, SVG; max 5 MB), uploads selected files to the admin upload endpoint, and submits form data to create or update a skill.
+ *
+ * @param skill - Optional existing skill used to prefill the form when editing.
+ * @param onSuccess - Optional callback invoked after a successful create or update operation.
+ * @returns The skill form React element.
+ */
 export default function SkillForm({ skill, onSuccess }: Props) {
   const [isPending, startTransition] = useTransition()
   const [isUploading, setIsUploading] = useState(false)

@@ -29,6 +29,13 @@ const CATEGORY_COLOURS: Record<string, string> = {
   OTHER: 'bg-muted text-muted-foreground border-border',
 }
 
+/**
+ * Render a skill icon or a placeholder when no icon URL is provided.
+ *
+ * @param iconUrl - The image URL for the skill icon; if empty, a placeholder is shown
+ * @param name - The skill name used as the image `alt` text
+ * @returns A JSX element showing the skill image when `iconUrl` is present, otherwise a `Code2` placeholder icon
+ */
 function SkillIconDisplay({ iconUrl, name }: { iconUrl: string; name: string }) {
   if (!iconUrl) {
     return <Code2 className="w-5 h-5 text-muted-foreground/50" />
@@ -46,6 +53,14 @@ function SkillIconDisplay({ iconUrl, name }: { iconUrl: string; name: string }) 
   )
 }
 
+/**
+ * Admin page that lists skills, groups them by category, and provides an add form plus per-skill controls.
+ *
+ * Renders an "Add New Skill" form, an empty state when no skills exist, or grouped category cards showing
+ * each skill's icon preview, name, order badge, and delete action.
+ *
+ * @returns The React element for the skills management page.
+ */
 export default async function SkillsPage() {
   const skills = await prisma.skill.findMany({
     orderBy: [{ category: 'asc' }, { order: 'asc' }, { name: 'asc' }],
