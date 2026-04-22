@@ -8,8 +8,14 @@ import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = { title: 'Edit Post' }
 
-export default async function EditBlogPostPage({ params }: { params: { id: string } }) {
-  const post = await prisma.blogPost.findUnique({ where: { id: params.id } })
+// Next.js 15: params is a Promise
+export default async function EditBlogPostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const post = await prisma.blogPost.findUnique({ where: { id } })
   if (!post) notFound()
 
   return (

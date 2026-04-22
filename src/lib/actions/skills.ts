@@ -16,8 +16,7 @@ async function assertAdmin() {
 const SkillSchema = z.object({
   name: z.string().min(1).max(60),
   category: z.enum(['FRONTEND', 'BACKEND', 'DATABASE', 'DEVOPS', 'TOOLS', 'LANGUAGES', 'MOBILE', 'OTHER']),
-  icon: z.string().min(1).max(10).default('⚡'),
-  proficiency: z.number().int().min(1).max(100).default(80),
+  iconUrl: z.string().url().or(z.literal('')).default(''),
   order: z.number().int().default(0),
 })
 
@@ -26,8 +25,7 @@ export async function createSkill(formData: FormData) {
   const raw = {
     name: formData.get('name'),
     category: formData.get('category'),
-    icon: formData.get('icon') || '⚡',
-    proficiency: Number(formData.get('proficiency') ?? 80),
+    iconUrl: formData.get('iconUrl') || '',
     order: Number(formData.get('order') ?? 0),
   }
   const parsed = SkillSchema.safeParse(raw)
@@ -42,8 +40,7 @@ export async function updateSkill(id: string, formData: FormData) {
   const raw = {
     name: formData.get('name'),
     category: formData.get('category'),
-    icon: formData.get('icon') || '⚡',
-    proficiency: Number(formData.get('proficiency') ?? 80),
+    iconUrl: formData.get('iconUrl') || '',
     order: Number(formData.get('order') ?? 0),
   }
   const parsed = SkillSchema.safeParse(raw)

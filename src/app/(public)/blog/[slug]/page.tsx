@@ -10,6 +10,9 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Button } from '@/components/ui/button'
 
+// Next.js 15: params is a Promise
+type PageParams = { params: Promise<{ slug: string }> }
+
 export async function generateStaticParams() {
   const posts = await prisma.blogPost.findMany({
     where: { published: true },
@@ -20,13 +23,10 @@ export async function generateStaticParams() {
 
 export const revalidate = 60
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { slug } = await params
   const post = await prisma.blogPost.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     select: { title: true, excerpt: true, thumbnail: true },
   })
   if (!post) return {}
@@ -47,18 +47,19 @@ export async function generateMetadata({
   }
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { slug: string }
-}) {
+export default async function BlogPostPage({ params }: PageParams) {
+  const { slug } = await params
+
   const post = await prisma.blogPost.findUnique({
-    where: { slug: params.slug, published: true },
+    where: { slug, published: true },
   })
   if (!post) notFound()
 
-  // Increment view count (fire-and-forget)
-  prisma.blogPost.update({ where: { id: post.id }, data: { views: { increment: 1 } } }).catch(() => {})
+  // Increment view count via API (fire-and-forget, non-blocking)
+  fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/blog/views/${slug}`, {
+    method: 'POST',
+    cache: 'no-store',
+  }).catch(() => {})
 
   return (
     <div className="pt-28 pb-24">
@@ -121,25 +122,25 @@ export default async function BlogPostPage({
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
-                // @ts-ignore
-                code({ node, inline, className, children, ...props }) {
+                code(props) {
+                  const { children, className, ...rest } = props
                   const match = /language-(\w+)/.exec(className || '')
-                  return !inline && match ? (
+                  const isBlock = match !== null
+                  return isBlock ? (
                     <SyntaxHighlighter
-                      // @ts-ignore
+                      // @ts-expect-error – style type mismatch between packages
                       style={oneDark}
                       language={match[1]}
                       PreTag="div"
                       className="!rounded-xl !my-6 !text-sm"
                       showLineNumbers
-                      {...props}
                     >
                       {String(children).replace(/\n$/, '')}
                     </SyntaxHighlighter>
                   ) : (
                     <code
                       className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-primary"
-                      {...props}
+                      {...rest}
                     >
                       {children}
                     </code>

@@ -1,12 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ThemeToggle } from './ThemeToggle'
 import { cn } from '@/lib/utils/cn'
 import { useState, useEffect } from 'react'
-import { Menu, X, Code2 } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
@@ -37,9 +38,17 @@ export default function Navbar() {
     >
       <nav className="section-container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
-            <Code2 className="w-4 h-4 text-white" />
+        <Link href="/" className="flex items-center gap-2.5 group">
+          {/* Night Thinker logo — inverts on dark mode so it stays visible */}
+          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Night Thinker logo"
+              width={32}
+              height={32}
+              className="object-contain dark:invert"
+              priority
+            />
           </div>
           <span className="font-bold text-lg hidden sm:block">
             <span className="gradient-text">Lancelot</span>

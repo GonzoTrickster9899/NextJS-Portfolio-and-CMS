@@ -1,13 +1,14 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import { Loader2 } from 'lucide-react'
+import { useState, useTransition, useRef } from 'react'
+import { Loader2, Upload, X, ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createSkill, updateSkill } from '@/lib/actions/skills'
 import { toast } from 'sonner'
+import Image from 'next/image'
 
 const CATEGORIES = [
   { value: 'FRONTEND', label: 'Frontend' },
@@ -20,14 +21,11 @@ const CATEGORIES = [
   { value: 'OTHER', label: 'Other' },
 ]
 
-const SUGGESTED_ICONS = ['⚡','🎨','🗄️','🚀','🔧','💻','📱','🔷','🐍','☕','🦀','🐹','🟨','🟦','⚛️','🎯','🌐','🔒','📦','🛠️','🔥','✨','🌿','⚙️']
-
 interface Skill {
   id: string
   name: string
   category: string
-  icon: string
-  proficiency: number
+  iconUrl: string
   order: number
 }
 
@@ -38,17 +36,52 @@ interface Props {
 
 export default function SkillForm({ skill, onSuccess }: Props) {
   const [isPending, startTransition] = useTransition()
+  const [isUploading, setIsUploading] = useState(false)
   const [category, setCategory] = useState(skill?.category ?? 'FRONTEND')
-  const [icon, setIcon] = useState(skill?.icon ?? '⚡')
-  const [proficiency, setProficiency] = useState(skill?.proficiency ?? 80)
-  const [iconInput, setIconInput] = useState(skill?.icon ?? '⚡')
+  const [iconUrl, setIconUrl] = useState(skill?.iconUrl ?? '')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleIconUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']
+    if (!allowed.includes(file.type)) {
+      toast.error('Use JPEG, PNG, WebP, GIF, or SVG files.')
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be under 5 MB.')
+      return
+    }
+
+    setIsUploading(true)
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('folder', 'skills')
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error ?? 'Upload failed')
+      }
+      const { url } = await res.json()
+      setIconUrl(url)
+      toast.success('Icon uploaded!')
+    } catch (err: any) {
+      toast.error(err.message ?? 'Upload failed')
+    } finally {
+      setIsUploading(false)
+      // Reset so same file can be re-selected if needed
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const fd = new FormData(e.currentTarget)
     fd.set('category', category)
-    fd.set('icon', icon)
-    fd.set('proficiency', String(proficiency))
+    fd.set('iconUrl', iconUrl)
 
     startTransition(async () => {
       const result = skill
@@ -56,29 +89,22 @@ export default function SkillForm({ skill, onSuccess }: Props) {
         : await createSkill(fd)
 
       if (result?.error) {
-        toast.error('Please fill all required fields correctly')
+        toast.error('Please fill all required fields correctly.')
         return
       }
       toast.success(skill ? 'Skill updated!' : 'Skill added!')
       if (!skill) {
         setCategory('FRONTEND')
-        setIcon('⚡')
-        setIconInput('⚡')
-        setProficiency(80)
+        setIconUrl('')
         ;(e.target as HTMLFormElement).reset()
       }
       onSuccess?.()
     })
   }
 
-  const selectIcon = (i: string) => {
-    setIcon(i)
-    setIconInput(i)
-  }
-
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Name + Icon */}
+      {/* Name + Category */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <Label htmlFor="name">Skill Name *</Label>
@@ -90,40 +116,6 @@ export default function SkillForm({ skill, onSuccess }: Props) {
             required
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="icon">Icon / Emoji</Label>
-          <div className="flex gap-2">
-            <Input
-              id="icon"
-              name="icon"
-              value={iconInput}
-              onChange={(e) => { setIconInput(e.target.value); setIcon(e.target.value) }}
-              placeholder="⚡"
-              className="w-20 text-center text-lg"
-              maxLength={4}
-            />
-            <div className="flex flex-wrap gap-1 flex-1">
-              {SUGGESTED_ICONS.slice(0, 12).map((i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => selectIcon(i)}
-                  className={`w-8 h-8 rounded-lg text-base flex items-center justify-center transition-all hover:scale-110 ${
-                    icon === i
-                      ? 'bg-primary/20 border border-primary/40 shadow-sm'
-                      : 'hover:bg-primary/10 border border-transparent'
-                  }`}
-                >
-                  {i}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Category + Order */}
-      <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <Label>Category *</Label>
           <Select value={category} onValueChange={setCategory}>
@@ -139,65 +131,123 @@ export default function SkillForm({ skill, onSuccess }: Props) {
             </SelectContent>
           </Select>
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="order">Display Order</Label>
-          <Input
-            id="order"
-            name="order"
-            type="number"
-            defaultValue={skill?.order ?? 0}
-          />
-        </div>
       </div>
 
-      {/* Proficiency slider */}
+      {/* Icon upload */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="proficiency">Proficiency</Label>
-          <span className="text-sm font-semibold text-primary tabular-nums">{proficiency}%</span>
-        </div>
-        <input
-          id="proficiency"
-          name="proficiency"
-          type="range"
-          min={1}
-          max={100}
-          value={proficiency}
-          onChange={(e) => setProficiency(Number(e.target.value))}
-          className="w-full accent-primary h-2 rounded-full cursor-pointer"
-        />
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <span>Beginner</span>
-          <span>Intermediate</span>
-          <span>Expert</span>
+        <Label>Skill Icon</Label>
+        <div className="flex items-start gap-4">
+          {/* Preview box */}
+          <div className="w-16 h-16 rounded-xl border border-primary/20 bg-primary/5 flex items-center justify-center shrink-0 overflow-hidden">
+            {iconUrl ? (
+              <div className="relative w-full h-full">
+                <Image
+                  src={iconUrl}
+                  alt="Skill icon preview"
+                  fill
+                  className="object-contain p-1.5"
+                  unoptimized
+                />
+              </div>
+            ) : (
+              <ImageIcon className="w-7 h-7 text-muted-foreground/40" />
+            )}
+          </div>
+
+          <div className="flex-1 space-y-2">
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/svg+xml"
+              className="hidden"
+              onChange={handleIconUpload}
+            />
+
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="gap-2 rounded-lg"
+                disabled={isUploading}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {isUploading ? (
+                  <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Uploading…</>
+                ) : (
+                  <><Upload className="w-3.5 h-3.5" /> {iconUrl ? 'Replace Icon' : 'Upload Icon'}</>
+                )}
+              </Button>
+
+              {iconUrl && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1.5 rounded-lg text-muted-foreground hover:text-destructive"
+                  onClick={() => setIconUrl('')}
+                >
+                  <X className="w-3.5 h-3.5" /> Remove
+                </Button>
+              )}
+            </div>
+
+            {/* URL fallback input */}
+            <Input
+              name="iconUrl"
+              value={iconUrl}
+              onChange={(e) => setIconUrl(e.target.value)}
+              placeholder="Or paste an image URL…"
+              className="text-xs"
+            />
+            <p className="text-xs text-muted-foreground">
+              Accepts JPEG, PNG, WebP, GIF, SVG — max 5 MB. Use a transparent PNG or SVG for best results.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Preview */}
+      {/* Display Order */}
+      <div className="space-y-1.5 max-w-xs">
+        <Label htmlFor="order">Display Order</Label>
+        <Input
+          id="order"
+          name="order"
+          type="number"
+          defaultValue={skill?.order ?? 0}
+        />
+      </div>
+
+      {/* Preview badge */}
       <div className="rounded-xl border border-primary/15 bg-primary/5 p-4 flex items-center gap-3">
-        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/20 flex items-center justify-center text-xl shrink-0">
-          {icon}
+        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/20 flex items-center justify-center shrink-0 overflow-hidden">
+          {iconUrl ? (
+            <div className="relative w-full h-full">
+              <Image
+                src={iconUrl}
+                alt="preview"
+                fill
+                className="object-contain p-1.5"
+                unoptimized
+              />
+            </div>
+          ) : (
+            <ImageIcon className="w-5 h-5 text-muted-foreground/50" />
+          )}
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm text-foreground">Preview</p>
+        <div>
+          <p className="font-semibold text-sm text-foreground">Badge Preview</p>
           <p className="text-xs text-muted-foreground">
-            {icon} · {CATEGORIES.find((c) => c.value === category)?.label ?? category} · {proficiency}% proficiency
+            {CATEGORIES.find((c) => c.value === category)?.label ?? category}
           </p>
-        </div>
-        <div className="text-right">
-          <div className="w-20 h-1.5 rounded-full bg-muted overflow-hidden">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
-              style={{ width: `${proficiency}%` }}
-            />
-          </div>
         </div>
       </div>
 
       <div className="flex justify-end pt-1">
         <Button
           type="submit"
-          disabled={isPending}
+          disabled={isPending || isUploading}
           className="rounded-full bg-gradient-to-r from-primary to-accent text-white gap-2 shadow-lg shadow-primary/20"
         >
           {isPending ? (

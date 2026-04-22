@@ -8,15 +8,15 @@ import './globals.css'
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   title: {
-    default: 'Portfolio — Software Engineer',
-    template: '%s | Portfolio',
+    default: 'Lancelot Oleriana | Software Engineer',
+    template: 'Lancelot Oleriana | %s',
   },
   description:
     'Software engineer specializing in full-stack web development. Building fast, scalable, and beautiful applications.',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Portfolio',
+    siteName: 'Lancelot Oleriana',
   },
   twitter: {
     card: 'summary_large_image',
@@ -24,6 +24,17 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
   },
 }
 

@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import { Code2 } from 'lucide-react'
 
 type SkillCategory = 'FRONTEND' | 'BACKEND' | 'DATABASE' | 'DEVOPS' | 'TOOLS' | 'LANGUAGES' | 'MOBILE' | 'OTHER'
 
@@ -9,8 +11,7 @@ interface Skill {
   id: string
   name: string
   category: SkillCategory
-  icon: string
-  proficiency: number
+  iconUrl: string
   order: number
 }
 
@@ -19,17 +20,36 @@ interface Props {
 }
 
 const CATEGORY_META: Record<SkillCategory, { label: string; colour: string; glow: string; dot: string }> = {
-  FRONTEND:  { label: 'Frontend',   colour: 'bg-sky-500/10 text-sky-500 border-sky-500/25',        glow: 'shadow-sky-500/20',    dot: 'bg-sky-400' },
+  FRONTEND:  { label: 'Frontend',   colour: 'bg-sky-500/10 text-sky-500 border-sky-500/25',         glow: 'shadow-sky-500/20',    dot: 'bg-sky-400' },
   BACKEND:   { label: 'Backend',    colour: 'bg-violet-500/10 text-violet-500 border-violet-500/25', glow: 'shadow-violet-500/20', dot: 'bg-violet-400' },
-  DATABASE:  { label: 'Database',   colour: 'bg-amber-500/10 text-amber-500 border-amber-500/25',   glow: 'shadow-amber-500/20',  dot: 'bg-amber-400' },
+  DATABASE:  { label: 'Database',   colour: 'bg-amber-500/10 text-amber-500 border-amber-500/25',    glow: 'shadow-amber-500/20',  dot: 'bg-amber-400' },
   DEVOPS:    { label: 'DevOps',     colour: 'bg-orange-500/10 text-orange-500 border-orange-500/25', glow: 'shadow-orange-500/20', dot: 'bg-orange-400' },
-  TOOLS:     { label: 'Tools',      colour: 'bg-primary/10 text-primary border-primary/25',          glow: 'shadow-primary/20',    dot: 'bg-primary' },
-  LANGUAGES: { label: 'Languages',  colour: 'bg-rose-500/10 text-rose-500 border-rose-500/25',       glow: 'shadow-rose-500/20',   dot: 'bg-rose-400' },
-  MOBILE:    { label: 'Mobile',     colour: 'bg-indigo-500/10 text-indigo-500 border-indigo-500/25', glow: 'shadow-indigo-500/20', dot: 'bg-indigo-400' },
-  OTHER:     { label: 'Other',      colour: 'bg-muted text-muted-foreground border-border',           glow: 'shadow-muted',         dot: 'bg-muted-foreground' },
+  TOOLS:     { label: 'Tools',      colour: 'bg-primary/10 text-primary border-primary/25',           glow: 'shadow-primary/20',    dot: 'bg-primary' },
+  LANGUAGES: { label: 'Languages',  colour: 'bg-rose-500/10 text-rose-500 border-rose-500/25',        glow: 'shadow-rose-500/20',   dot: 'bg-rose-400' },
+  MOBILE:    { label: 'Mobile',     colour: 'bg-indigo-500/10 text-indigo-500 border-indigo-500/25',  glow: 'shadow-indigo-500/20', dot: 'bg-indigo-400' },
+  OTHER:     { label: 'Other',      colour: 'bg-muted text-muted-foreground border-border',            glow: 'shadow-muted',         dot: 'bg-muted-foreground' },
 }
 
 const CATEGORY_ORDER: SkillCategory[] = ['FRONTEND', 'BACKEND', 'LANGUAGES', 'DATABASE', 'DEVOPS', 'TOOLS', 'MOBILE', 'OTHER']
+
+// ── Skill icon: image or fallback ──
+function SkillIcon({ iconUrl, name, size = 'md' }: { iconUrl: string; name: string; size?: 'sm' | 'md' }) {
+  const dim = size === 'sm' ? 'w-5 h-5' : 'w-6 h-6'
+  if (!iconUrl) {
+    return <Code2 className={`${dim} opacity-60`} />
+  }
+  return (
+    <div className={`relative ${dim} shrink-0`}>
+      <Image
+        src={iconUrl}
+        alt={name}
+        fill
+        className="object-contain"
+        unoptimized
+      />
+    </div>
+  )
+}
 
 // ── Single animated skill badge ──
 function SkillBadge({ skill, index }: { skill: Skill; index: number }) {
@@ -44,7 +64,7 @@ function SkillBadge({ skill, index }: { skill: Skill; index: number }) {
       transition={{
         duration: 0.4,
         delay: index * 0.04,
-        ease: [0.34, 1.56, 0.64, 1], // spring-like
+        ease: [0.34, 1.56, 0.64, 1],
       }}
       whileHover={{ y: -6, scale: 1.08 }}
       onHoverStart={() => setHovered(true)}
@@ -60,41 +80,11 @@ function SkillBadge({ skill, index }: { skill: Skill; index: number }) {
         `}
       >
         {/* Icon */}
-        <span className="text-xl leading-none">{skill.icon}</span>
+        <SkillIcon iconUrl={skill.iconUrl} name={skill.name} />
 
         {/* Name */}
         <span className="text-sm font-semibold whitespace-nowrap">{skill.name}</span>
-
-        {/* Proficiency indicator on hover */}
-        <AnimatePresence>
-          {hovered && (
-            <motion.div
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              className="overflow-hidden"
-            >
-              <span className="text-xs font-bold tabular-nums ml-0.5 opacity-80">
-                {skill.proficiency}%
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
-
-      {/* Proficiency bar underneath badge on hover */}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            animate={{ scaleX: 1, opacity: 1 }}
-            exit={{ scaleX: 0, opacity: 0 }}
-            style={{ originX: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute -bottom-1 left-2 right-2 h-0.5 rounded-full bg-gradient-to-r from-primary to-accent"
-          />
-        )}
-      </AnimatePresence>
     </motion.div>
   )
 }
@@ -142,7 +132,6 @@ export default function SkillsSection({ skills }: Props) {
 
   if (skills.length === 0) return null
 
-  // Build category counts (only categories that exist in data)
   const categories = CATEGORY_ORDER.filter((c) => skills.some((s) => s.category === c))
 
   const displayed = activeCategory === 'ALL'
@@ -167,14 +156,14 @@ export default function SkillsSection({ skills }: Props) {
         >
           <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary mb-3">
             <span className="w-6 h-px bg-primary" />
-            Skills & Technologies
+            Skills &amp; Technologies
             <span className="w-6 h-px bg-primary" />
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
             Tools of the Trade
           </h2>
           <p className="mt-3 text-muted-foreground text-lg max-w-2xl leading-relaxed">
-            Technologies I work with — hover any badge to see proficiency level.
+            Technologies I work with across the full stack.
           </p>
         </motion.div>
 
@@ -208,7 +197,7 @@ export default function SkillsSection({ skills }: Props) {
           })}
         </motion.div>
 
-        {/* Skills grid — animate on filter change */}
+        {/* Skills grid */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -264,7 +253,7 @@ export default function SkillsSection({ skills }: Props) {
           )}
         </motion.div>
 
-        {/* Stats row */}
+        {/* Category count cards */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -274,7 +263,6 @@ export default function SkillsSection({ skills }: Props) {
           {categories.slice(0, 4).map((cat) => {
             const meta = CATEGORY_META[cat]
             const catSkills = skills.filter((s) => s.category === cat)
-            const avg = Math.round(catSkills.reduce((a, s) => a + s.proficiency, 0) / catSkills.length)
             return (
               <motion.div
                 key={cat}
@@ -288,15 +276,9 @@ export default function SkillsSection({ skills }: Props) {
                 <p className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
                   {catSkills.length}
                 </p>
-                <p className="text-xs text-muted-foreground mt-0.5">skills · avg {avg}%</p>
-                <div className="mt-3 h-1 rounded-full bg-muted overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={inView ? { width: `${avg}%` } : {}}
-                    transition={{ duration: 1, delay: 0.6, ease: 'easeOut' }}
-                    className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-                  />
-                </div>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {catSkills.length === 1 ? 'skill' : 'skills'}
+                </p>
               </motion.div>
             )
           })}

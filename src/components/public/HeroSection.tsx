@@ -40,42 +40,13 @@ const blobVariants = {
   },
 }
 
+// Static decorative tech cards — no emoji, clean text labels
 const TECH_BADGES = [
-  {
-    icon: '⚡',
-    label: 'Next.js 15',
-    sublabel: 'App Router',
-    position: { top: '4%', left: '40%' },
-    delay: 0.6,
-  },
-  {
-    icon: '🎨',
-    label: 'Tailwind CSS',
-    sublabel: 'Modern Styling',
-    position: { top: '18%', right: '-10%' },
-    delay: 0.7,
-  },
-  {
-    icon: '🗄️',
-    label: 'Supabase',
-    sublabel: 'DB & Auth',
-    position: { top: '55%', left: '-12%' },
-    delay: 0.8,
-  },
-  {
-    icon: '🚀',
-    label: 'Vercel',
-    sublabel: 'Deployment',
-    position: { bottom: '22%', right: '-8%' },
-    delay: 0.9,
-  },
-  {
-    icon: '🔷',
-    label: 'TypeScript',
-    sublabel: 'Type Safety',
-    position: { bottom: '12%', left: '-6%' },
-    delay: 1.0,
-  },
+  { label: 'Full Stack',        sublabel: 'Development',      position: { top: '4%',   left: '40%'  }, delay: 0.6 },
+  { label: 'UI/UX and Graphic', sublabel: 'Design', position: { top: '18%',  right: '-10%'}, delay: 0.7 },
+  { label: 'System Design',     sublabel: 'Architecture',       position: { top: '55%',  left: '-12%' }, delay: 0.8 },
+  { label: 'DevOps',            sublabel: 'Deployment',      position: { bottom: '22%', right: '-8%'}, delay: 0.9 },
+  { label: 'Project',           sublabel: 'Management',     position: { bottom: '12%', left: '-6%' }, delay: 1.0 },
 ]
 
 export default function HeroSection({ data }: { data: HeroData }) {
@@ -94,16 +65,11 @@ export default function HeroSection({ data }: { data: HeroData }) {
         animate={{ scale: [1, 1.06, 0.97, 1], transition: { duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 2 } }}
       />
 
-      {/* ── Main Layout Container ── */}
       <div className="section-container relative z-10 py-12 lg:py-24 grid lg:grid-cols-2 gap-12 items-center w-full">
 
-        {/* Left Side: Content */}
+        {/* Left: Content */}
         <div className="max-w-2xl">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <motion.div variants={containerVariants} initial="hidden" animate="visible">
             <motion.div variants={itemVariants}>
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold glass-card border border-primary/30 text-primary mb-6">
                 <Sparkles className="w-3 h-3" />
@@ -149,12 +115,12 @@ export default function HeroSection({ data }: { data: HeroData }) {
               <span className="text-sm text-muted-foreground">Find me on</span>
               <div className="flex items-center gap-2">
                 {data.githubUrl && (
-                  <a href={data.githubUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all">
+                  <a href={data.githubUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all" aria-label="GitHub">
                     <Github className="w-4 h-4" />
                   </a>
                 )}
                 {data.linkedinUrl && (
-                  <a href={data.linkedinUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all">
+                  <a href={data.linkedinUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:scale-110 transition-all" aria-label="LinkedIn">
                     <Linkedin className="w-4 h-4" />
                   </a>
                 )}
@@ -178,18 +144,14 @@ export default function HeroSection({ data }: { data: HeroData }) {
           </motion.div>
         </div>
 
-        {/* Right Side: Person Image with floating glass tech cards */}
+        {/* Right: Person image + floating tech cards */}
         <div className="hidden lg:flex relative justify-center items-center h-[640px] w-full">
-          {/* Glow ring behind person */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-[380px] h-[380px] rounded-full bg-gradient-to-br from-primary/30 to-accent/20 blur-3xl" />
           </div>
-
-          {/* Subtle ring border */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-primary/20" />
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] rounded-full border border-primary/10 border-dashed" />
 
-          {/* Person image */}
           <motion.div
             className="relative z-10 w-[320px] h-[420px]"
             initial={{ opacity: 0, y: 30 }}
@@ -205,18 +167,18 @@ export default function HeroSection({ data }: { data: HeroData }) {
             />
           </motion.div>
 
-          {/* Floating tech glass cards */}
           {TECH_BADGES.map((badge) => (
             <motion.div
               key={badge.label}
-              className="absolute glass-card rounded-2xl px-4 py-3 flex items-center gap-3 border border-primary/20 shadow-xl backdrop-blur-md min-w-[170px] z-20"
+              className="absolute glass-card rounded-2xl px-4 py-3 flex items-center gap-3 border border-primary/20 shadow-xl backdrop-blur-md min-w-[160px] z-20"
               style={badge.position as React.CSSProperties}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: badge.delay, duration: 0.6 }}
               whileHover={{ scale: 1.06, y: -4, zIndex: 50 }}
             >
-              <span className="text-xl">{badge.icon}</span>
+              {/* Coloured dot accent instead of emoji */}
+              <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-primary to-accent shrink-0" />
               <div className="flex flex-col">
                 <p className="text-sm font-bold text-foreground leading-none mb-1">{badge.label}</p>
                 <p className="text-[10px] uppercase tracking-wider font-semibold text-primary/70 leading-none">

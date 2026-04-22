@@ -1,20 +1,27 @@
 import Link from 'next/link'
 import { Github, Linkedin, Twitter, Code2 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
+import { unstable_cache } from 'next/cache'
 
-async function getSocialLinks() {
-  try {
-    const configs = await prisma.siteConfig.findMany({
-      where: { key: { in: ['github_url', 'linkedin_url', 'twitter_url'] } },
-    })
-    return Object.fromEntries(configs.map((c) => [c.key, c.value]))
-  } catch {
-    return {}
-  }
-}
+// Cache the social link DB query — revalidates every hour
+const getSocialLinks = unstable_cache(
+  async () => {
+    try {
+      const configs = await prisma.siteConfig.findMany({
+        where: { key: { in: ['github_url', 'linkedin_url', 'twitter_url'] } },
+      })
+      return Object.fromEntries(configs.map((c) => [c.key, c.value]))
+    } catch {
+      return {}
+    }
+  },
+  ['footer-social-links'],
+  { revalidate: 3600 }
+)
 
 export default async function Footer() {
   const social = await getSocialLinks()
+  const year = new Date().getFullYear()
 
   return (
     <footer className="border-t border-primary/10 bg-background/50 backdrop-blur-sm">
@@ -26,12 +33,12 @@ export default async function Footer() {
               <Code2 className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-sm font-medium text-muted-foreground">
-              Built with Next.js & Supabase
+              Built with Next.js &amp; Supabase
             </span>
           </div>
 
           {/* Nav links */}
-          <nav className="flex items-center gap-6 text-sm text-muted-foreground">
+          <nav className="flex items-center gap-6 text-sm text-muted-foreground" aria-label="Footer navigation">
             {[
               { href: '/', label: 'Home' },
               { href: '/portfolio', label: 'Portfolio' },
@@ -78,7 +85,7 @@ export default async function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
-                aria-label="Twitter"
+                aria-label="Twitter / X"
               >
                 <Twitter className="w-4 h-4" />
               </a>
@@ -87,7 +94,7 @@ export default async function Footer() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-primary/10 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} — All rights reserved.
+          &copy; {year} — All rights reserved.
         </div>
       </div>
     </footer>

@@ -20,6 +20,17 @@ export interface SiteConfig {
   twitter_url: string
 }
 
+// Skill (matches updated Prisma model)
+export interface SkillData {
+  id: string
+  name: string
+  category: string
+  iconUrl: string
+  order: number
+  createdAt: Date
+  updatedAt: Date
+}
+
 // Project form data
 export interface ProjectFormData {
   title: string

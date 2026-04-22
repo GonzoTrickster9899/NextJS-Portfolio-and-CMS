@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
@@ -12,7 +13,6 @@ import {
   Inbox,
   Briefcase,
   LogOut,
-  Code2,
   ExternalLink,
   FileDown,
   Sparkles,
@@ -50,8 +50,14 @@ export default function AdminSidebar({ userEmail }: Props) {
       {/* Brand */}
       <div className="p-6 border-b border-primary/10">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
-            <Code2 className="w-4 h-4 text-white" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Night Thinker logo"
+              width={36}
+              height={36}
+              className="object-contain dark:invert"
+            />
           </div>
           <div>
             <p className="font-bold text-sm leading-none gradient-text">Admin</p>

@@ -52,7 +52,7 @@ export default async function AdminBlogPage() {
                       <Clock className="w-3 h-3" /> {post.readingTime} min
                     </span>
                     <span className="flex items-center gap-1">
-                      <Eye className="w-3 h-3" /> {post.views} views
+                      <Eye className="w-3 h-3" /> {post.views.toLocaleString()} views
                     </span>
                     <span>{format(post.createdAt, 'MMM d, yyyy')}</span>
                   </div>

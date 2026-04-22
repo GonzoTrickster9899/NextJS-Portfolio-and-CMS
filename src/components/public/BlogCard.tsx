@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Clock, Calendar, ArrowUpRight } from 'lucide-react'
+import { Clock, Calendar, ArrowUpRight, FileText } from 'lucide-react'
 import { format } from 'date-fns'
 import type { BlogPost } from '@prisma/client'
 
@@ -37,7 +37,7 @@ export default function BlogCard({ post, index = 0 }: Props) {
             </div>
           ) : (
             <div className="h-48 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 flex items-center justify-center">
-              <span className="text-5xl opacity-30">✍️</span>
+              <FileText className="w-10 h-10 text-primary/20" />
             </div>
           )}
 

@@ -14,6 +14,11 @@ export async function PATCH(
 ) {
   try {
     await assertAdmin()
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
     const body = await req.json()
     const { id } = await params
     await prisma.message.update({
@@ -21,8 +26,9 @@ export async function PATCH(
       data: { isRead: body.isRead ?? true },
     })
     return NextResponse.json({ success: true })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 401 })
+  } catch (error) {
+    console.error('[INBOX_PATCH]', error)
+    return NextResponse.json({ error: 'Failed to update message' }, { status: 500 })
   }
 }
 
@@ -32,10 +38,16 @@ export async function DELETE(
 ) {
   try {
     await assertAdmin()
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
     const { id } = await params
     await prisma.message.delete({ where: { id } })
     return NextResponse.json({ success: true })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 401 })
+  } catch (error) {
+    console.error('[INBOX_DELETE]', error)
+    return NextResponse.json({ error: 'Failed to delete message' }, { status: 500 })
   }
 }

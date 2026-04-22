@@ -8,12 +8,14 @@ import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = { title: 'Edit Project' }
 
+// Next.js 15: params is a Promise
 export default async function EditProjectPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const project = await prisma.project.findUnique({ where: { id: params.id } })
+  const { id } = await params
+  const project = await prisma.project.findUnique({ where: { id } })
   if (!project) notFound()
 
   return (

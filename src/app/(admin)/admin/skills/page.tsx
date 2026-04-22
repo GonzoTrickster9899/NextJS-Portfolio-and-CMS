@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
+import { Code2 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import SkillForm from '@/components/admin/SkillForm'
 import DeleteSkillButton from '@/components/admin/DeleteSkillButton'
-import SectionHeading from '@/components/public/SectionHeading'
 
 export const metadata: Metadata = { title: 'Manage Skills' }
 
@@ -28,6 +29,23 @@ const CATEGORY_COLOURS: Record<string, string> = {
   OTHER: 'bg-muted text-muted-foreground border-border',
 }
 
+function SkillIconDisplay({ iconUrl, name }: { iconUrl: string; name: string }) {
+  if (!iconUrl) {
+    return <Code2 className="w-5 h-5 text-muted-foreground/50" />
+  }
+  return (
+    <div className="relative w-7 h-7">
+      <Image
+        src={iconUrl}
+        alt={name}
+        fill
+        className="object-contain"
+        unoptimized
+      />
+    </div>
+  )
+}
+
 export default async function SkillsPage() {
   const skills = await prisma.skill.findMany({
     orderBy: [{ category: 'asc' }, { order: 'asc' }, { name: 'asc' }],
@@ -46,6 +64,7 @@ export default async function SkillsPage() {
         <h1 className="text-2xl font-bold tracking-tight">Skills</h1>
         <p className="text-muted-foreground mt-1">
           Manage your skill badges — displayed as an animated section on the home page.
+          Upload an icon image (PNG, SVG) for each skill.
         </p>
       </div>
 
@@ -63,7 +82,7 @@ export default async function SkillsPage() {
       {/* Skills grouped by category */}
       {skills.length === 0 ? (
         <div className="glass-card rounded-2xl border border-primary/10 p-16 text-center text-muted-foreground">
-          <p className="text-4xl mb-4">🛠️</p>
+          <Code2 className="w-10 h-10 mx-auto mb-4 opacity-30" />
           <p className="text-lg font-medium">No skills yet</p>
           <p className="text-sm mt-1">Add your first skill using the form above.</p>
         </div>
@@ -95,22 +114,16 @@ export default async function SkillsPage() {
                     className="flex items-center gap-4 px-5 py-3.5 hover:bg-primary/5 transition-colors group"
                   >
                     {/* Icon */}
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 border border-primary/15 flex items-center justify-center text-lg shrink-0">
-                      {skill.icon}
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 border border-primary/15 flex items-center justify-center shrink-0 overflow-hidden">
+                      <SkillIconDisplay iconUrl={skill.iconUrl} name={skill.name} />
                     </div>
 
-                    {/* Name + bar */}
+                    {/* Name */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <p className="font-semibold text-sm text-foreground">{skill.name}</p>
-                        <span className="text-xs text-primary font-medium tabular-nums">{skill.proficiency}%</span>
-                      </div>
-                      <div className="h-1.5 w-full max-w-xs rounded-full bg-muted overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-                          style={{ width: `${skill.proficiency}%` }}
-                        />
-                      </div>
+                      <p className="font-semibold text-sm text-foreground">{skill.name}</p>
+                      {!skill.iconUrl && (
+                        <p className="text-xs text-amber-500 mt-0.5">No icon uploaded</p>
+                      )}
                     </div>
 
                     {/* Order badge */}
