@@ -31,19 +31,19 @@ export default function Navbar() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         scrolled
-          ? 'glass-card border-b border-border/50 shadow-sm'
+          ? 'glass-card border-b border-primary/10 shadow-sm shadow-primary/5'
           : 'bg-transparent border-b border-transparent'
       )}
     >
       <nav className="section-container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
             <Code2 className="w-4 h-4 text-white" />
           </div>
           <span className="font-bold text-lg hidden sm:block">
-            <span className="gradient-text">dev</span>
-            <span className="text-foreground">.portfolio</span>
+            <span className="gradient-text">Lancelot</span>
+            <span className="text-foreground"> Oleriana</span>
           </span>
         </Link>
 
@@ -65,7 +65,7 @@ export default function Navbar() {
                 {isActive && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full bg-primary/10"
+                    className="absolute inset-0 rounded-full bg-primary/10 border border-primary/20"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                   />
                 )}
@@ -79,7 +79,7 @@ export default function Navbar() {
           <ThemeToggle />
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -94,7 +94,7 @@ export default function Navbar() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="md:hidden glass-card border-b border-border/50 px-4 pb-4"
+          className="md:hidden glass-card border-b border-primary/10 px-4 pb-4"
         >
           {NAV_LINKS.map((link) => (
             <Link
@@ -104,8 +104,8 @@ export default function Navbar() {
               className={cn(
                 'block px-4 py-3 rounded-xl text-sm font-medium transition-colors',
                 pathname === link.href
-                  ? 'text-primary bg-primary/10'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  ? 'text-primary bg-primary/10 border border-primary/20'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-primary/5'
               )}
             >
               {link.label}

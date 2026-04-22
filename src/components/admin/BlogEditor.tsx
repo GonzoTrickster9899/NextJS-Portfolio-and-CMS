@@ -124,7 +124,7 @@ export default function BlogEditor({ post }: { post?: BlogPost }) {
         <div className="flex items-center gap-3">
           <label className="cursor-pointer">
             <input type="file" accept="image/*" className="hidden" onChange={handleThumbUpload} disabled={isUploading} />
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-dashed border-border hover:border-primary/50 text-sm text-muted-foreground hover:bg-primary/5 transition-all">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-dashed border-primary/30 hover:border-primary/50 text-sm text-muted-foreground hover:bg-primary/5 transition-all">
               {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
               {thumbnail ? 'Replace' : 'Upload thumbnail'}
             </div>
@@ -144,7 +144,7 @@ export default function BlogEditor({ post }: { post?: BlogPost }) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label>Content *</Label>
-          <div className="flex rounded-lg border border-border overflow-hidden">
+          <div className="flex rounded-lg border border-primary/20 overflow-hidden">
             <button
               type="button"
               onClick={() => setActiveTab('write')}
@@ -180,7 +180,7 @@ const hello = 'world'
             required
           />
         ) : (
-          <div className="min-h-[480px] rounded-xl border border-border p-6 bg-muted/30 overflow-auto">
+          <div className="min-h-[480px] rounded-xl border border-primary/20 p-6 bg-muted/30 overflow-auto">
             {content ? (
               <div className="prose-portfolio">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
@@ -198,7 +198,7 @@ const hello = 'world'
       </div>
 
       {/* Publish toggle + submit */}
-      <div className="flex items-center justify-between pt-2 border-t border-border/50">
+      <div className="flex items-center justify-between pt-2 border-t border-primary/10">
         <div className="flex items-center gap-2">
           <Switch id="published" checked={published} onCheckedChange={setPublished} />
           <Label htmlFor="published" className="cursor-pointer">

@@ -93,3 +93,28 @@ model SiteConfig {
 
   @@index([key])
 }
+
+enum SkillCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS
+  TOOLS
+  LANGUAGES
+  MOBILE
+  OTHER
+}
+
+model Skill {
+  id          String        @id @default(cuid())
+  name        String
+  category    SkillCategory @default(OTHER)
+  icon        String        @default("⚡")
+  proficiency Int           @default(80)
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([category])
+  @@index([order])
+}

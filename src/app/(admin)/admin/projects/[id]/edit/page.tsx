@@ -17,7 +17,7 @@ export default async function EditProjectPage({
   if (!project) notFound()
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-3xl space-y-6">
       <div className="flex items-center gap-3">
         <Button asChild variant="ghost" size="icon" className="rounded-full">
           <Link href="/admin/projects">
@@ -29,7 +29,7 @@ export default async function EditProjectPage({
           <p className="text-muted-foreground text-sm mt-0.5">{project.title}</p>
         </div>
       </div>
-      <div className="glass-card rounded-2xl border border-border/50 p-6">
+      <div className="glass-card rounded-2xl border border-primary/10 p-6">
         <ProjectForm project={project} />
       </div>
     </div>

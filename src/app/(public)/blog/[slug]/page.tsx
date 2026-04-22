@@ -95,7 +95,7 @@ export default async function BlogPostPage({
               {post.excerpt}
             </p>
 
-            <div className="flex items-center gap-5 text-sm text-muted-foreground glass-card border border-border/50 rounded-2xl px-4 py-3 w-fit">
+            <div className="flex items-center gap-5 text-sm text-muted-foreground glass-card border border-primary/20 rounded-2xl px-4 py-3 w-fit">
               <span className="flex items-center gap-1.5">
                 <Calendar className="w-4 h-4 text-primary" />
                 {post.publishedAt ? format(new Date(post.publishedAt), 'MMMM d, yyyy') : 'Draft'}
@@ -176,7 +176,7 @@ export default async function BlogPostPage({
           </div>
 
           {/* Footer */}
-          <div className="mt-16 pt-8 border-t border-border/50 flex justify-center">
+          <div className="mt-16 pt-8 border-t border-primary/10 flex justify-center">
             <Button asChild variant="outline" className="rounded-full gap-2">
               <Link href="/blog">
                 <ArrowLeft className="w-4 h-4" /> More Articles

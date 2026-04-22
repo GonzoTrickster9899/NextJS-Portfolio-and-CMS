@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'New Project' }
 
 export default function NewProjectPage() {
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-3xl space-y-6">
       <div className="flex items-center gap-3">
         <Button asChild variant="ghost" size="icon" className="rounded-full">
           <Link href="/admin/projects">
@@ -20,7 +20,7 @@ export default function NewProjectPage() {
           <p className="text-muted-foreground text-sm mt-0.5">Add a new project to your portfolio</p>
         </div>
       </div>
-      <div className="glass-card rounded-2xl border border-border/50 p-6">
+      <div className="glass-card rounded-2xl border border-primary/10 p-6">
         <ProjectForm />
       </div>
     </div>

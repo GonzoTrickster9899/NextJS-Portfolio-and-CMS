@@ -20,7 +20,7 @@ export default function ProjectCard({ project, index = 0 }: Props) {
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       whileHover={{ y: -4 }}
-      className="group relative glass-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
+      className="group relative glass-card rounded-2xl overflow-hidden border border-primary/15 hover:border-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
     >
       {/* Featured badge */}
       {project.isFeatured && (

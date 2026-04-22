@@ -98,7 +98,7 @@ export default function ProjectForm({ project }: { project?: Project }) {
       <div className="space-y-2">
         <Label>Cover Image *</Label>
         {imageUrl && (
-          <div className="relative h-44 rounded-xl overflow-hidden border border-border">
+          <div className="relative h-44 rounded-xl overflow-hidden border border-primary/20">
             <Image src={imageUrl} alt="Preview" fill className="object-cover" />
             <button
               type="button"
@@ -111,7 +111,7 @@ export default function ProjectForm({ project }: { project?: Project }) {
         )}
         <label className="cursor-pointer block">
           <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={isUploading} />
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-border hover:border-primary/50 hover:bg-primary/5 transition-all text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-primary/30 hover:border-primary/50 hover:bg-primary/5 transition-all text-sm text-muted-foreground">
             {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
             {isUploading ? 'Uploading…' : imageUrl ? 'Replace image' : 'Upload image (max 5MB)'}
           </div>

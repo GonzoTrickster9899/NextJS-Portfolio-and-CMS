@@ -54,7 +54,7 @@ export default function ContactForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card rounded-2xl p-10 text-center border border-border/50"
+        className="glass-card rounded-2xl p-10 text-center border border-primary/15"
       >
         <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-8 h-8 text-emerald-500" />
@@ -77,7 +77,7 @@ export default function ContactForm() {
   return (
     <motion.form
       onSubmit={handleSubmit(onSubmit)}
-      className="glass-card rounded-2xl p-6 sm:p-8 border border-border/50 space-y-5"
+      className="glass-card rounded-2xl p-6 sm:p-8 border border-primary/15 space-y-5"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

@@ -45,7 +45,7 @@ export default function LoginPage() {
         className="w-full max-w-sm"
       >
         {/* Card */}
-        <div className="glass-card rounded-3xl border border-border/50 p-8 shadow-2xl">
+        <div className="glass-card rounded-3xl border border-primary/20 p-8 shadow-2xl shadow-primary/10">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/30 mb-4">

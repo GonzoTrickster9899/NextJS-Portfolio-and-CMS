@@ -7,6 +7,7 @@ import ProjectCard from '@/components/public/ProjectCard'
 import BlogCard from '@/components/public/BlogCard'
 import ExperienceTimeline from '@/components/public/ExperienceTimeline'
 import SectionHeading from '@/components/public/SectionHeading'
+import SkillsSection from '@/components/public/SkillsSection'
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
@@ -18,11 +19,11 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 async function getHomeData() {
-  const [configs, featuredProjects, recentPosts, experiences] = await Promise.all([
+  const [configs, featuredProjects, recentPosts, experiences, skills] = await Promise.all([
     prisma.siteConfig.findMany({
       where: {
         key: {
-          in: ['hero_name', 'hero_title', 'hero_bio', 'github_url', 'linkedin_url'],
+          in: ['hero_name', 'hero_title', 'hero_bio', 'github_url', 'linkedin_url', 'resume_url'],
         },
       },
     }),
@@ -39,14 +40,17 @@ async function getHomeData() {
     prisma.experience.findMany({
       orderBy: { order: 'asc' },
     }),
+    prisma.skill.findMany({
+      orderBy: [{ category: 'asc' }, { order: 'asc' }, { name: 'asc' }],
+    }),
   ])
 
   const cfg = Object.fromEntries(configs.map((c) => [c.key, c.value]))
-  return { cfg, featuredProjects, recentPosts, experiences }
+  return { cfg, featuredProjects, recentPosts, experiences, skills }
 }
 
 export default async function HomePage() {
-  const { cfg, featuredProjects, recentPosts, experiences } = await getHomeData()
+  const { cfg, featuredProjects, recentPosts, experiences, skills } = await getHomeData()
 
   const heroData = {
     name: cfg.hero_name ?? 'Your Name',
@@ -56,12 +60,16 @@ export default async function HomePage() {
       'I build fast, scalable, and beautiful web applications. Passionate about clean code, great UX, and solving real problems with technology.',
     githubUrl: cfg.github_url ?? '',
     linkedinUrl: cfg.linkedin_url ?? '',
+    resumeUrl: cfg.resume_url ?? '',
   }
 
   return (
     <>
       {/* ── Hero ── */}
       <HeroSection data={heroData} />
+
+      {/* ── Skills ── */}
+      <SkillsSection skills={skills} />
 
       {/* ── Featured Projects ── */}
       {featuredProjects.length > 0 && (

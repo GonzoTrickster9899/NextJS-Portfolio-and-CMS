@@ -53,7 +53,7 @@ const config: Config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-mesh':
-          'radial-gradient(at 40% 20%, hsla(28,100%,74%,0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,0.15) 0px, transparent 50%), radial-gradient(at 80% 50%, hsla(340,100%,76%,0.1) 0px, transparent 50%), radial-gradient(at 0% 100%, hsla(22,100%,77%,0.15) 0px, transparent 50%)',
+          'radial-gradient(at 40% 20%, hsla(152,76%,60%,0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(168,84%,50%,0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(145,60%,70%,0.15) 0px, transparent 50%), radial-gradient(at 80% 50%, hsla(152,70%,55%,0.1) 0px, transparent 50%), radial-gradient(at 0% 100%, hsla(168,80%,60%,0.15) 0px, transparent 50%)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

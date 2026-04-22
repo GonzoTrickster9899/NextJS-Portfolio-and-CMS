@@ -13,7 +13,7 @@ export default async function EditBlogPostPage({ params }: { params: { id: strin
   if (!post) notFound()
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-5xl space-y-6">
       <div className="flex items-center gap-3">
         <Button asChild variant="ghost" size="icon" className="rounded-full">
           <Link href="/admin/blog"><ArrowLeft className="w-4 h-4" /></Link>
@@ -23,7 +23,7 @@ export default async function EditBlogPostPage({ params }: { params: { id: strin
           <p className="text-muted-foreground text-sm mt-0.5 truncate max-w-md">{post.title}</p>
         </div>
       </div>
-      <div className="glass-card rounded-2xl border border-border/50 p-6">
+      <div className="glass-card rounded-2xl border border-primary/10 p-6">
         <BlogEditor post={post} />
       </div>
     </div>

@@ -36,7 +36,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
               className={`relative px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                 isActive
                   ? 'text-white shadow-md shadow-primary/25'
-                  : 'text-muted-foreground hover:text-foreground glass-card border border-border/50 hover:border-primary/30'
+                  : 'text-muted-foreground hover:text-foreground glass-card border border-primary/15 hover:border-primary/30'
               }`}
             >
               {isActive && (

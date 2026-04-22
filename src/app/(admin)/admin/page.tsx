@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
       value: stats.totalProjects,
       icon: FolderKanban,
       href: '/admin/projects',
-      color: 'from-blue-500 to-indigo-600',
+      color: 'from-emerald-500 to-teal-600',
     },
     {
       label: 'Blog Posts',
@@ -40,14 +40,14 @@ export default async function AdminDashboard() {
       sub: 'published',
       icon: FileText,
       href: '/admin/blog',
-      color: 'from-violet-500 to-purple-600',
+      color: 'from-green-500 to-emerald-600',
     },
     {
       label: 'Unread Messages',
       value: stats.unreadMessages,
       icon: Inbox,
       href: '/admin/inbox',
-      color: stats.unreadMessages > 0 ? 'from-rose-500 to-pink-600' : 'from-emerald-500 to-teal-600',
+      color: stats.unreadMessages > 0 ? 'from-rose-500 to-pink-600' : 'from-emerald-500 to-green-600',
       alert: stats.unreadMessages > 0,
     },
     {
@@ -55,12 +55,12 @@ export default async function AdminDashboard() {
       value: stats.totalExperiences,
       icon: Briefcase,
       href: '/admin/experience',
-      color: 'from-amber-500 to-orange-600',
+      color: 'from-green-600 to-teal-700',
     },
   ]
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground mt-1">
@@ -69,16 +69,16 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         {STAT_CARDS.map((card) => {
           const Icon = card.icon
           return (
             <Link
               key={card.label}
               href={card.href}
-              className="group glass-card rounded-2xl p-5 border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-0.5"
+              className="group glass-card rounded-2xl p-5 border border-primary/10 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-0.5"
             >
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform`}>
                 <Icon className="w-5 h-5 text-white" />
               </div>
               <div className="flex items-end justify-between">
@@ -96,8 +96,8 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Recent Messages */}
-      <div className="glass-card rounded-2xl border border-border/50 overflow-hidden">
-        <div className="flex items-center justify-between p-5 border-b border-border/50">
+      <div className="glass-card rounded-2xl border border-primary/10 overflow-hidden">
+        <div className="flex items-center justify-between p-5 border-b border-primary/10">
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-primary" />
             <h2 className="font-semibold">Recent Messages</h2>
@@ -115,12 +115,12 @@ export default async function AdminDashboard() {
             No messages yet.
           </div>
         ) : (
-          <div className="divide-y divide-border/50">
+          <div className="divide-y divide-primary/5">
             {stats.recentMessages.map((msg) => (
               <Link
                 key={msg.id}
                 href="/admin/inbox"
-                className="flex items-start gap-4 p-4 hover:bg-muted/50 transition-colors"
+                className="flex items-start gap-4 p-4 hover:bg-primary/5 transition-colors"
               >
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-xs font-bold text-primary uppercase">
@@ -159,7 +159,7 @@ export default async function AdminDashboard() {
             <Link
               key={action.href}
               href={action.href}
-              className="px-4 py-2 rounded-full glass-card border border-border/50 hover:border-primary/40 text-sm font-medium text-muted-foreground hover:text-foreground transition-all hover:-translate-y-0.5"
+              className="px-4 py-2 rounded-full glass-card border border-primary/20 hover:border-primary/40 hover:bg-primary/5 text-sm font-medium text-muted-foreground hover:text-primary transition-all hover:-translate-y-0.5"
             >
               {action.label}
             </Link>

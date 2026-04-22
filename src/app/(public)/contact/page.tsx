@@ -33,7 +33,7 @@ export default function ContactPage() {
   return (
     <div className="pt-28 pb-24">
       <div className="section-container">
-        <div className="max-w-5xl mx-auto">
+        <div>
           <SectionHeading
             label="Contact"
             title="Let's Work Together"
@@ -43,7 +43,7 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-5 gap-10">
             {/* Left — Info */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="glass-card rounded-2xl p-6 border border-border/50 space-y-5">
+              <div className="glass-card rounded-2xl p-6 border border-primary/15 space-y-5">
                 {INFO_ITEMS.map((item) => {
                   const Icon = item.icon
                   return (

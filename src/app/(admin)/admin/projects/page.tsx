@@ -15,7 +15,7 @@ export default async function AdminProjectsPage() {
   })
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Projects</h1>
@@ -28,7 +28,7 @@ export default async function AdminProjectsPage() {
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border border-border/50 overflow-hidden">
+      <div className="glass-card rounded-2xl border border-primary/10 overflow-hidden">
         {projects.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
             <p className="text-lg font-medium">No projects yet.</p>
@@ -39,11 +39,11 @@ export default async function AdminProjectsPage() {
             </Button>
           </div>
         ) : (
-          <div className="divide-y divide-border/50">
+          <div className="divide-y divide-primary/5">
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="flex items-center gap-4 p-4 hover:bg-muted/30 transition-colors"
+                className="flex items-center gap-4 p-4 hover:bg-primary/5 transition-colors"
               >
                 {/* Thumbnail */}
                 <div className="relative w-16 h-12 rounded-lg overflow-hidden bg-muted shrink-0">
@@ -61,7 +61,7 @@ export default async function AdminProjectsPage() {
                   <div className="flex items-center gap-2">
                     <p className="font-medium truncate">{project.title}</p>
                     {project.isFeatured && (
-                      <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
+                      <Star className="w-3.5 h-3.5 text-primary fill-primary shrink-0" />
                     )}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">

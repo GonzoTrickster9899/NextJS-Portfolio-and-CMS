@@ -17,7 +17,7 @@ export default async function Footer() {
   const social = await getSocialLinks()
 
   return (
-    <footer className="border-t border-border/50 bg-background/50 backdrop-blur-sm">
+    <footer className="border-t border-primary/10 bg-background/50 backdrop-blur-sm">
       <div className="section-container py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Brand */}
@@ -55,7 +55,7 @@ export default async function Footer() {
                 href={social.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
                 aria-label="GitHub"
               >
                 <Github className="w-4 h-4" />
@@ -66,7 +66,7 @@ export default async function Footer() {
                 href={social.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
@@ -77,7 +77,7 @@ export default async function Footer() {
                 href={social.twitter_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
                 aria-label="Twitter"
               >
                 <Twitter className="w-4 h-4" />
@@ -86,7 +86,7 @@ export default async function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border/50 text-center text-xs text-muted-foreground">
+        <div className="mt-8 pt-6 border-t border-primary/10 text-center text-xs text-muted-foreground">
           © {new Date().getFullYear()} — All rights reserved.
         </div>
       </div>
