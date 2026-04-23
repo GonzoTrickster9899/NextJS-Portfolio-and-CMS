@@ -8,7 +8,14 @@ import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = { title: 'Edit Post' }
 
-// Next.js 15: params is a Promise
+/**
+ * Render the Edit Post page for the blog post identified by the route `id`.
+ *
+ * Fetches the post from the database and renders a header with navigation and the blog editor populated with the fetched post. If no post is found, calls `notFound()` to trigger Next.js's 404 behavior.
+ *
+ * @param params - A Promise that resolves to the route parameters object containing `id` (Next.js 15 supplies `params` as a Promise)
+ * @returns The page UI containing the edit header and `BlogEditor` for the requested post
+ */
 export default async function EditBlogPostPage({
   params,
 }: {

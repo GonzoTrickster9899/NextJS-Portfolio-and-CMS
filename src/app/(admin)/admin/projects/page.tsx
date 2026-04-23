@@ -9,6 +9,11 @@ import DeleteProjectButton from '@/components/admin/DeleteProjectButton'
 
 export const metadata: Metadata = { title: 'Manage Projects' }
 
+/**
+ * Admin page that displays all projects with controls to create, edit, and delete entries.
+ *
+ * @returns The React element for the admin projects page showing project count, a creation button, and a list of project rows with thumbnail, metadata, and action controls.
+ */
 export default async function AdminProjectsPage() {
   const projects = await prisma.project.findMany({
     orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],

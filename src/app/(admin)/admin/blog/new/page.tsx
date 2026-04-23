@@ -6,6 +6,13 @@ import BlogEditor from '@/components/admin/BlogEditor'
 
 export const metadata: Metadata = { title: 'New Post' }
 
+/**
+ * Page component that renders the "New Post" editor layout.
+ *
+ * Renders a header row with a circular back button, page title and subtitle, and a styled editor card that hosts the `BlogEditor` component.
+ *
+ * @returns A JSX element containing the New Post page layout.
+ */
 export default function NewBlogPostPage() {
   return (
     <div className="max-w-5xl space-y-6">

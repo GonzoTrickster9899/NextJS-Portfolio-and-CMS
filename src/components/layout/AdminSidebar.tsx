@@ -33,6 +33,12 @@ interface Props {
   userEmail: string
 }
 
+/**
+ * Renders the admin sidebar containing brand, navigation links, and user account controls.
+ *
+ * @param userEmail - The admin user's email shown as the avatar initial and account label
+ * @returns The sidebar element containing brand, navigation, and user/logout controls
+ */
 export default function AdminSidebar({ userEmail }: Props) {
   const pathname = usePathname()
   const router = useRouter()

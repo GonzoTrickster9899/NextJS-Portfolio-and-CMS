@@ -11,6 +11,13 @@ export const metadata: Metadata = {
 
 export const revalidate = 60
 
+/**
+ * Render the blog index page by loading published posts and displaying them in a responsive grid or an empty-state when there are no posts.
+ *
+ * Fetches published blog posts ordered by most recently published and renders a SectionHeading followed by either a grid of BlogCard components or a centered empty-state message with an icon.
+ *
+ * @returns The page's JSX element rendering the blog list when posts exist, or an empty-state message when none are published.
+ */
 export default async function BlogPage() {
   const posts = await prisma.blogPost.findMany({
     where: { published: true },

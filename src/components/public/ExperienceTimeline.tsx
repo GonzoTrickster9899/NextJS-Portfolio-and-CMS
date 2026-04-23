@@ -4,6 +4,12 @@ import { motion } from 'framer-motion'
 import { Briefcase, MapPin } from 'lucide-react'
 import type { Experience } from '@prisma/client'
 
+/**
+ * Render a vertical timeline of professional experiences.
+ *
+ * @param experiences - Array of experience objects to render as individual timeline entries
+ * @returns A React element containing the rendered experience timeline
+ */
 export default function ExperienceTimeline({
   experiences,
 }: {

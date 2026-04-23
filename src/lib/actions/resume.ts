@@ -7,6 +7,12 @@ import { uploadResume, deleteResume } from '@/lib/supabase/storage'
 
 const RESUME_KEY = 'resume_url'
 
+/**
+ * Ensures the current Supabase-authenticated user is the configured admin and returns that user.
+ *
+ * @returns The authenticated Supabase user object.
+ * @throws Error if there is no authenticated user or the user's email does not match `process.env.ADMIN_EMAIL`.
+ */
 async function assertAdmin() {
   const supabase = await createClient()
   const {
@@ -16,11 +22,22 @@ async function assertAdmin() {
   return user
 }
 
+/**
+ * Retrieve the public resume PDF URL stored in the site's configuration.
+ *
+ * @returns The stored resume URL, or `null` if no resume URL is configured.
+ */
 export async function getResumeUrl(): Promise<string | null> {
   const config = await prisma.siteConfig.findUnique({ where: { key: RESUME_KEY } })
   return config?.value ?? null
 }
 
+/**
+ * Validates and uploads a resume PDF, persists its public URL in siteConfig, and revalidates affected routes.
+ *
+ * @param formData - A FormData object expected to contain a `resume` File entry (PDF, under 10 MB)
+ * @returns An object with `success: true` and `url` when the upload and persistence succeed; otherwise `success: false` and an `error` message describing the failure
+ */
 export async function uploadResumeAction(formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
   try {
     await assertAdmin()
@@ -52,6 +69,13 @@ export async function uploadResumeAction(formData: FormData): Promise<{ success:
   }
 }
 
+/**
+ * Deletes the stored resume PDF from storage, removes its public URL record, and revalidates affected routes.
+ *
+ * Operation requires an admin-authenticated user; non-admin callers will receive a failure response.
+ *
+ * @returns An object with `success: true` on success; if the operation fails, `success: false` and `error` contains an error message.
+ */
 export async function deleteResumeAction(): Promise<{ success: boolean; error?: string }> {
   try {
     await assertAdmin()

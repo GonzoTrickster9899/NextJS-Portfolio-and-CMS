@@ -6,6 +6,11 @@ import ProjectForm from '@/components/admin/ProjectForm'
 
 export const metadata: Metadata = { title: 'New Project' }
 
+/**
+ * Renders the "New Project" admin page with a header (back button, title, subtitle) and a card containing the project form.
+ *
+ * @returns The JSX element for the New Project page layout.
+ */
 export default function NewProjectPage() {
   return (
     <div className="max-w-3xl space-y-6">

@@ -6,6 +6,15 @@ import { Briefcase } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Manage Experience' }
 
+/**
+ * Server component that renders the "Manage Experience" page.
+ *
+ * Fetches experience entries ordered by their `order` field, renders an "Add New Entry" form,
+ * and displays current experience entries (each with role, company, duration, and delete control)
+ * when any exist.
+ *
+ * @returns A React element for the experience management page containing the add-entry form and an ordered list of existing experiences (if any).
+ */
 export default async function ExperiencePage() {
   const experiences = await prisma.experience.findMany({ orderBy: { order: 'asc' } })
 

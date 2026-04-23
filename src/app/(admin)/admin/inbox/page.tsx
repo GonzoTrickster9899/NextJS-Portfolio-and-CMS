@@ -7,6 +7,17 @@ import DeleteMessageButton from '@/components/admin/DeleteMessageButton'
 
 export const metadata: Metadata = { title: 'Inbox' }
 
+/**
+ * Render the admin Inbox page that lists contact form messages.
+ *
+ * Displays total and unread counts, an empty-state when there are no messages,
+ * and a scroll-free list of messages ordered with unread first and newest first.
+ * Each message row shows sender avatar, name, email, subject, relative timestamp,
+ * message body, and action controls to reply via mailto, mark as read (when unread),
+ * and delete.
+ *
+ * @returns A React element that renders the inbox UI with message rows and controls.
+ */
 export default async function InboxPage() {
   const messages = await prisma.message.findMany({
     orderBy: [{ isRead: 'asc' }, { createdAt: 'desc' }],

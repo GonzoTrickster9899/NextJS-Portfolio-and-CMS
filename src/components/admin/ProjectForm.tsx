@@ -19,6 +19,14 @@ import type { Project } from '@prisma/client'
 const CATEGORIES = ['FRONTEND', 'BACKEND', 'FULLSTACK', 'DEVOPS', 'MOBILE', 'OTHER'] as const
 type Category = typeof CATEGORIES[number]
 
+/**
+ * Renders a form for creating or editing a Project, including inputs for title, slug, description, cover image, tech stack, links, category, order, and featured flag.
+ *
+ * The form initializes fields from the optional `project` prop when present, supports image upload and preview, tech stack add/remove, displays field errors returned from the server, and submits form data to create or update a project.
+ *
+ * @param project - Optional existing project used to populate the form for editing; when omitted the form is used to create a new project.
+ * @returns The JSX form element used to create or update a Project.
+ */
 export default function ProjectForm({ project }: { project?: Project }) {
   const [isPending, startTransition] = useTransition()
   const [techInput, setTechInput] = useState('')

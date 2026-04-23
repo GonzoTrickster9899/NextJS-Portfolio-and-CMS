@@ -32,7 +32,14 @@ const CATEGORY_META: Record<SkillCategory, { label: string; colour: string; glow
 
 const CATEGORY_ORDER: SkillCategory[] = ['FRONTEND', 'BACKEND', 'LANGUAGES', 'DATABASE', 'DEVOPS', 'TOOLS', 'MOBILE', 'OTHER']
 
-// ── Skill icon: image or fallback ──
+/**
+ * Render a skill icon using the provided image URL or a compact fallback icon.
+ *
+ * @param iconUrl - The source URL for the icon; when absent or empty a `Code2` fallback icon is rendered.
+ * @param name - Accessible alt text for the image.
+ * @param size - Visual size of the icon: `'sm'` renders the small classes (`w-5 h-5`), `'md'` renders the medium classes (`w-6 h-6`).
+ * @returns A JSX element containing the image (with `object-contain`) when `iconUrl` is present, otherwise a `Code2` fallback icon.
+ */
 function SkillIcon({ iconUrl, name, size = 'md' }: { iconUrl: string; name: string; size?: 'sm' | 'md' }) {
   const dim = size === 'sm' ? 'w-5 h-5' : 'w-6 h-6'
   if (!iconUrl) {
@@ -51,7 +58,13 @@ function SkillIcon({ iconUrl, name, size = 'md' }: { iconUrl: string; name: stri
   )
 }
 
-// ── Single animated skill badge ──
+/**
+ * Renders an animated skill badge showing the skill's icon and name, with hover lift/glow and staggered entry/exit animations.
+ *
+ * @param skill - The skill to display; its `category` is used for styling and `iconUrl` is used for the badge icon.
+ * @param index - Zero-based index used to compute the staggered entrance delay for animation timing.
+ * @returns A JSX element representing the animated skill badge.
+ */
 function SkillBadge({ skill, index }: { skill: Skill; index: number }) {
   const meta = CATEGORY_META[skill.category]
   const [hovered, setHovered] = useState(false)
@@ -89,7 +102,16 @@ function SkillBadge({ skill, index }: { skill: Skill; index: number }) {
   )
 }
 
-// ── Category pill filter ──
+/**
+ * Renders a clickable category filter pill containing a colored status dot, a label, and a numeric count.
+ *
+ * @param label - Visible text label for the category
+ * @param active - If `true`, applies active styling to the pill
+ * @param dot - Tailwind/CSS classes that determine the dot's color when the pill is inactive
+ * @param count - Number to display on the right side of the pill
+ * @param onClick - Callback invoked when the pill is clicked
+ * @returns The category pill as a clickable button element
+ */
 function CategoryPill({
   label,
   active,
@@ -125,6 +147,12 @@ function CategoryPill({
   )
 }
 
+/**
+ * Render the "Skills & Technologies" section with animated category filters, grouped or filtered skill badges, and category count cards.
+ *
+ * @param skills - Array of `Skill` objects to display; controls which categories are shown and the rendered badges.
+ * @returns A JSX element containing the skills section, or `null` when `skills` is empty.
+ */
 export default function SkillsSection({ skills }: Props) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
