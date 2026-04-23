@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { Loader2, Code2, Lock } from 'lucide-react'
+import { Loader2, Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function LoginPage() {
@@ -29,8 +30,6 @@ export default function LoginPage() {
       return
     }
 
-    // Admin-email check is enforced server-side by middleware + admin layout.
-    // The middleware will redirect non-admin users back to /login automatically.
     toast.success('Welcome back!')
     router.push('/admin')
     router.refresh()
@@ -45,14 +44,20 @@ export default function LoginPage() {
         className="w-full max-w-sm"
       >
         {/* Card */}
-        <div className="glass-card rounded-3xl border border-border/50 p-8 shadow-2xl">
+        <div className="glass-card rounded-3xl border border-primary/20 p-8 shadow-2xl shadow-primary/10">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/30 mb-4">
-              <Code2 className="w-7 h-7 text-white" />
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center shadow-lg shadow-primary/10 mb-4 overflow-hidden">
+              <Image
+                src="/logo.png"
+                alt="Night Thinker logo"
+                width={40}
+                height={40}
+                className="object-contain dark:invert"
+              />
             </div>
             <h1 className="text-xl font-bold">Admin Access</h1>
-            <p className="text-sm text-muted-foreground mt-1">Portfolio Dashboard</p>
+            <p className="text-sm text-muted-foreground mt-1">Lancelot Oleriana · Portfolio</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">

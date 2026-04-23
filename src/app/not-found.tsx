@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center mesh-bg px-4">
       <div className="text-center space-y-6">
-        <div className="glass-card inline-flex rounded-3xl px-8 py-6 border border-border/50 mb-4">
+        <div className="glass-card inline-flex rounded-3xl px-8 py-6 border border-primary/15 mb-4">
           <span className="text-8xl font-black gradient-text">404</span>
         </div>
         <h1 className="text-2xl font-bold">Page Not Found</h1>

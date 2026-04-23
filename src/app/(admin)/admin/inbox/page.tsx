@@ -15,7 +15,7 @@ export default async function InboxPage() {
   const unread = messages.filter((m) => !m.isRead).length
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Inbox</h1>
         <p className="text-muted-foreground mt-1">
@@ -23,7 +23,7 @@ export default async function InboxPage() {
         </p>
       </div>
 
-      <div className="glass-card rounded-2xl border border-border/50 overflow-hidden">
+      <div className="glass-card rounded-2xl border border-primary/10 overflow-hidden">
         {messages.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
             <Mail className="w-10 h-10 mx-auto mb-3 opacity-30" />
@@ -31,11 +31,11 @@ export default async function InboxPage() {
             <p className="text-sm mt-1">Messages from your contact form will appear here.</p>
           </div>
         ) : (
-          <div className="divide-y divide-border/50">
+          <div className="divide-y divide-primary/5">
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`p-5 transition-colors ${!msg.isRead ? 'bg-primary/3 hover:bg-primary/5' : 'hover:bg-muted/30'}`}
+                className={`p-5 transition-colors ${!msg.isRead ? 'bg-primary/5 hover:bg-primary/8' : 'hover:bg-primary/5'}`}
               >
                 <div className="flex items-start gap-4">
                   {/* Avatar */}

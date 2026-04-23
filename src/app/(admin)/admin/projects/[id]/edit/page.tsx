@@ -8,16 +8,18 @@ import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = { title: 'Edit Project' }
 
+// Next.js 15: params is a Promise
 export default async function EditProjectPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const project = await prisma.project.findUnique({ where: { id: params.id } })
+  const { id } = await params
+  const project = await prisma.project.findUnique({ where: { id } })
   if (!project) notFound()
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-3xl space-y-6">
       <div className="flex items-center gap-3">
         <Button asChild variant="ghost" size="icon" className="rounded-full">
           <Link href="/admin/projects">
@@ -29,7 +31,7 @@ export default async function EditProjectPage({
           <p className="text-muted-foreground text-sm mt-0.5">{project.title}</p>
         </div>
       </div>
-      <div className="glass-card rounded-2xl border border-border/50 p-6">
+      <div className="glass-card rounded-2xl border border-primary/10 p-6">
         <ProjectForm project={project} />
       </div>
     </div>

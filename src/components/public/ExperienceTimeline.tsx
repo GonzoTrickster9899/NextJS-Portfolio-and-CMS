@@ -30,13 +30,13 @@ export default function ExperienceTimeline({
             </div>
 
             {/* Card */}
-            <div className="glass-card rounded-2xl p-5 border border-border/50 hover:border-primary/30 transition-colors">
+            <div className="glass-card rounded-2xl p-5 border border-primary/15 hover:border-primary/30 transition-colors">
               <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
                 <div>
                   <h3 className="font-bold text-base">{exp.role}</h3>
                   <p className="text-primary font-medium text-sm">{exp.company}</p>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground glass-card border border-border/50 rounded-full px-3 py-1">
+                <div className="flex items-center gap-1 text-xs text-muted-foreground glass-card border border-primary/15 rounded-full px-3 py-1">
                   {exp.isCurrent && (
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1" />
                   )}
@@ -53,7 +53,7 @@ export default function ExperienceTimeline({
                   {exp.techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground border border-border/50 font-medium"
+                      className="text-xs px-2 py-0.5 rounded-md bg-primary/5 text-primary/80 border border-primary/15 font-medium"
                     >
                       {tech}
                     </span>

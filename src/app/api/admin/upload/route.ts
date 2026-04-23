@@ -13,15 +13,20 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData()
     const file = formData.get('file') as File | null
-    const folder = (formData.get('folder') as 'projects' | 'blog') ?? 'projects'
+    const folder = (formData.get('folder') as 'projects' | 'blog' | 'skills') ?? 'projects'
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif']
+    const validFolders = ['projects', 'blog', 'skills']
+    if (!validFolders.includes(folder)) {
+      return NextResponse.json({ error: 'Invalid folder. Use projects, blog, or skills.' }, { status: 400 })
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json({ error: 'Invalid file type. Use JPEG, PNG, WebP, or GIF.' }, { status: 415 })
+      return NextResponse.json({ error: 'Invalid file type. Use JPEG, PNG, WebP, GIF, or SVG.' }, { status: 415 })
     }
 
     if (file.size > 5 * 1024 * 1024) {

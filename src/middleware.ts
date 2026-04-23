@@ -35,7 +35,10 @@ export async function middleware(request: NextRequest) {
   const adminEmail = process.env.ADMIN_EMAIL
   const isAdminUser = !!user && !!adminEmail && user.email === adminEmail
 
-  console.log(`[Middleware] ${path} | user=${user?.email ?? 'none'} | isAdmin=${isAdminUser}`)
+  // Debug logging — development only
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[Middleware] ${path} | user=${user?.email ?? 'none'} | isAdmin=${isAdminUser}`)
+  }
 
   // Redirect unauthenticated / non-admin users away from /admin
   if (isAdminRoute && !isAdminUser) {

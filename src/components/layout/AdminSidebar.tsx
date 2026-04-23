@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
@@ -12,8 +13,9 @@ import {
   Inbox,
   Briefcase,
   LogOut,
-  Code2,
   ExternalLink,
+  FileDown,
+  Sparkles,
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -23,6 +25,8 @@ const NAV = [
   { href: '/admin/blog', label: 'Blog', icon: FileText, exact: false },
   { href: '/admin/inbox', label: 'Inbox', icon: Inbox, exact: false },
   { href: '/admin/experience', label: 'Experience', icon: Briefcase, exact: false },
+  { href: '/admin/skills', label: 'Skills', icon: Sparkles, exact: false },
+  { href: '/admin/resume', label: 'Resume', icon: FileDown, exact: false },
 ]
 
 interface Props {
@@ -42,15 +46,21 @@ export default function AdminSidebar({ userEmail }: Props) {
   }
 
   return (
-    <aside className="w-64 shrink-0 hidden lg:flex flex-col h-screen sticky top-0 border-r border-border/50 bg-card/50 backdrop-blur-sm">
+    <aside className="w-72 shrink-0 hidden lg:flex flex-col h-screen sticky top-0 border-r border-primary/10 bg-card/50 backdrop-blur-sm">
       {/* Brand */}
-      <div className="p-6 border-b border-border/50">
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-            <Code2 className="w-4 h-4 text-white" />
+      <div className="p-6 border-b border-primary/10">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Night Thinker logo"
+              width={36}
+              height={36}
+              className="object-contain dark:invert"
+            />
           </div>
           <div>
-            <p className="font-bold text-sm leading-none">Admin</p>
+            <p className="font-bold text-sm leading-none gradient-text">Admin</p>
             <p className="text-xs text-muted-foreground mt-0.5">Dashboard</p>
           </div>
         </Link>
@@ -72,7 +82,7 @@ export default function AdminSidebar({ userEmail }: Props) {
                 'relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors',
                 isActive
                   ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-primary/5'
               )}
             >
               {isActive && (
@@ -88,11 +98,11 @@ export default function AdminSidebar({ userEmail }: Props) {
           )
         })}
 
-        <div className="pt-4 mt-4 border-t border-border/50">
+        <div className="pt-4 mt-4 border-t border-primary/10">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             View Site
@@ -101,9 +111,9 @@ export default function AdminSidebar({ userEmail }: Props) {
       </nav>
 
       {/* User + Logout */}
-      <div className="p-4 border-t border-border/50">
-        <div className="glass-card rounded-xl p-3 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0">
+      <div className="p-4 border-t border-primary/10">
+        <div className="glass-card rounded-xl p-3 flex items-center gap-3 border border-primary/10">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0 shadow-md shadow-primary/20">
             <span className="text-white text-xs font-bold uppercase">
               {userEmail[0]}
             </span>

@@ -2,38 +2,54 @@ import { Metadata } from 'next'
 import { Mail, MapPin, Clock } from 'lucide-react'
 import ContactForm from '@/components/public/ContactForm'
 import SectionHeading from '@/components/public/SectionHeading'
+import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = {
   title: 'Contact',
   description: 'Get in touch — I am always open to interesting projects and conversations.',
 }
 
-const INFO_ITEMS = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'hello@yourdomain.com',
-    href: 'mailto:hello@yourdomain.com',
-  },
-  {
-    icon: MapPin,
-    label: 'Location',
-    value: 'Manila, Philippines',
-    href: null,
-  },
-  {
-    icon: Clock,
-    label: 'Response Time',
-    value: 'Within 24–48 hours',
-    href: null,
-  },
-]
+export const revalidate = 3600 // re-fetch config once per hour
 
-export default function ContactPage() {
+async function getContactConfig() {
+  try {
+    const configs = await prisma.siteConfig.findMany({
+      where: { key: { in: ['contact_email', 'contact_location', 'contact_response_time'] } },
+    })
+    return Object.fromEntries(configs.map((c) => [c.key, c.value]))
+  } catch {
+    return {}
+  }
+}
+
+export default async function ContactPage() {
+  const cfg = await getContactConfig()
+
+  const INFO_ITEMS = [
+    {
+      icon: Mail,
+      label: 'Email',
+      value: cfg.contact_email ?? process.env.ADMIN_EMAIL ?? 'hello@yourdomain.com',
+      href: `mailto:${cfg.contact_email ?? process.env.ADMIN_EMAIL ?? 'hello@yourdomain.com'}`,
+    },
+    {
+      icon: MapPin,
+      label: 'Location',
+      value: cfg.contact_location ?? 'Philippines',
+      href: null,
+    },
+    {
+      icon: Clock,
+      label: 'Response Time',
+      value: cfg.contact_response_time ?? 'Within 24–48 hours',
+      href: null,
+    },
+  ]
+
   return (
     <div className="pt-28 pb-24">
       <div className="section-container">
-        <div className="max-w-5xl mx-auto">
+        <div>
           <SectionHeading
             label="Contact"
             title="Let's Work Together"
@@ -43,7 +59,7 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-5 gap-10">
             {/* Left — Info */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="glass-card rounded-2xl p-6 border border-border/50 space-y-5">
+              <div className="glass-card rounded-2xl p-6 border border-primary/15 space-y-5">
                 {INFO_ITEMS.map((item) => {
                   const Icon = item.icon
                   return (

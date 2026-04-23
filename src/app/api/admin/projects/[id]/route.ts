@@ -14,13 +14,16 @@ export async function DELETE(
 ) {
   try {
     await assertAdmin()
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
     const { id } = await params
     await prisma.project.delete({ where: { id } })
     return NextResponse.json({ success: true })
-  } catch (error: any) {
-    if (error.message === 'Unauthorized') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    return NextResponse.json({ error: 'Failed to delete' }, { status: 500 })
+  } catch (error) {
+    console.error('[PROJECT_DELETE]', error)
+    return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 })
   }
 }

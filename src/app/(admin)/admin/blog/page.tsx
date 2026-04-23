@@ -15,7 +15,7 @@ export default async function AdminBlogPage() {
   })
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Blog Posts</h1>
@@ -28,7 +28,7 @@ export default async function AdminBlogPage() {
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border border-border/50 overflow-hidden">
+      <div className="glass-card rounded-2xl border border-primary/10 overflow-hidden">
         {posts.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
             <p className="text-lg font-medium">No posts yet.</p>
@@ -37,9 +37,9 @@ export default async function AdminBlogPage() {
             </Button>
           </div>
         ) : (
-          <div className="divide-y divide-border/50">
+          <div className="divide-y divide-primary/5">
             {posts.map((post) => (
-              <div key={post.id} className="flex items-center gap-4 p-4 hover:bg-muted/30 transition-colors">
+              <div key={post.id} className="flex items-center gap-4 p-4 hover:bg-primary/5 transition-colors">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <p className="font-medium truncate">{post.title}</p>
@@ -52,7 +52,7 @@ export default async function AdminBlogPage() {
                       <Clock className="w-3 h-3" /> {post.readingTime} min
                     </span>
                     <span className="flex items-center gap-1">
-                      <Eye className="w-3 h-3" /> {post.views} views
+                      <Eye className="w-3 h-3" /> {post.views.toLocaleString()} views
                     </span>
                     <span>{format(post.createdAt, 'MMM d, yyyy')}</span>
                   </div>
