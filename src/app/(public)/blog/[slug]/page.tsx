@@ -149,7 +149,6 @@ export default async function BlogPostPage({ params }: PageParams) {
                   const isBlock = match !== null
                   return isBlock ? (
                     <SyntaxHighlighter
-                      // @ts-expect-error – style type mismatch between packages
                       style={oneDark}
                       language={match[1]}
                       PreTag="div"
