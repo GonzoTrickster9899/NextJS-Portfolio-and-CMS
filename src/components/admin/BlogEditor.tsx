@@ -16,6 +16,15 @@ import type { BlogPost } from '@prisma/client'
 
 type Tab = 'write' | 'preview'
 
+/**
+ * Render a blog post editor form for creating or updating a post.
+ *
+ * The form includes title, slug, excerpt, tags, thumbnail upload, a Markdown editor with write/preview tabs,
+ * word count and read-time estimate, a publish toggle, and submit handling that creates or updates the post.
+ *
+ * @param post - Optional `BlogPost` used to prefill fields; presence of `post.id` switches the form into edit mode.
+ * @returns The rendered blog post editor form as a React element.
+ */
 export default function BlogEditor({ post }: { post?: BlogPost }) {
   const [isPending, startTransition] = useTransition()
   const [activeTab, setActiveTab] = useState<Tab>('write')

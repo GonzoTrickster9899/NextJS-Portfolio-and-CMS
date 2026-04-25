@@ -10,6 +10,13 @@ const ContactSchema = z.object({
   message: z.string().min(10).max(2000),
 })
 
+/**
+ * Handle incoming POST requests for contact submissions by validating input, saving the message, and attempting to notify recipients.
+ *
+ * Validation failures return a 400 response with `{ error: 'Invalid input', details: <fieldErrors> }`. On success the message is persisted and the handler attempts to send a notification email; email delivery failures are logged but do not alter the client response. Unexpected errors return a 500 response with `{ error: 'Something went wrong' }`.
+ *
+ * @returns A JSON NextResponse: `{ success: true }` on successful save and notification attempt; `{ error: 'Invalid input', details: ... }` with status 400 for validation errors; `{ error: 'Something went wrong' }` with status 500 for unexpected failures.
+ */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()

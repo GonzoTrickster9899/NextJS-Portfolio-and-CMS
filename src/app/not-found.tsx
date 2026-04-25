@@ -2,6 +2,11 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 
+/**
+ * Render a centered 404 "Page Not Found" UI with a prominent status, explanatory text, and a button to navigate home.
+ *
+ * @returns A React element displaying a full-viewport centered 404 page with a styled "404" card, title, description, and a "Go Home" button linking to `/`.
+ */
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center mesh-bg px-4">

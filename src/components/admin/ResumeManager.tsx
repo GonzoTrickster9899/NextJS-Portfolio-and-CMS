@@ -11,6 +11,13 @@ interface Props {
   currentUrl: string | null
 }
 
+/**
+ * Renders a resume management UI that lets an admin view the currently published resume (if any),
+ * stage a PDF via drag-and-drop or file picker, upload/replace the published resume, and remove it.
+ *
+ * @param currentUrl - The public URL of the currently uploaded resume, or `null` if no resume is published.
+ * @returns The ResumeManager React component UI.
+ */
 export default function ResumeManager({ currentUrl }: Props) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)

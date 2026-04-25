@@ -2,6 +2,15 @@ import { Resend } from 'resend'
 
 export const resend = new Resend(process.env.RESEND_API_KEY)
 
+/**
+ * Send an email notification to the admin containing a submitted contact form message.
+ *
+ * @param name - Sender's full name from the contact form
+ * @param email - Sender's email address (used as the reply-to and for the "Reply" link)
+ * @param subject - Subject provided by the sender
+ * @param message - Body of the message submitted by the sender
+ * @returns The response object returned by the Resend emails API
+ */
 export async function sendContactNotification({
   name,
   email,

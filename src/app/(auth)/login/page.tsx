@@ -11,6 +11,13 @@ import { toast } from 'sonner'
 import { Loader2, Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
 
+/**
+ * Render a centered admin login page with form inputs and sign-in handling.
+ *
+ * The component displays email and password fields, disables the submit button while a sign-in request is in flight, and uses Supabase to authenticate. On authentication failure it shows an error toast and keeps the form active; on success it shows a welcome toast and navigates to the `/admin` route.
+ *
+ * @returns The React element for the admin login page.
+ */
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')

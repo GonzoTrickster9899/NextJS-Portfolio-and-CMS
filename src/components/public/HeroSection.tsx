@@ -49,6 +49,12 @@ const TECH_BADGES = [
   { label: 'Project',           sublabel: 'Management',     position: { bottom: '12%', left: '-6%' }, delay: 1.0 },
 ]
 
+/**
+ * Render the hero section with animated heading, bio, call-to-action buttons, social/resume links, a portrait, and floating tech badges.
+ *
+ * @param data - Hero content including `name`, `title`, `bio`, and optional `githubUrl`, `linkedinUrl`, and `resumeUrl`. Social icons and the resume link are rendered only when their corresponding URLs are provided.
+ * @returns The JSX element for the full-page hero section with decorative background blobs, animated content, and a right-side visual panel (desktop-only).
+ */
 export default function HeroSection({ data }: { data: HeroData }) {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-16">

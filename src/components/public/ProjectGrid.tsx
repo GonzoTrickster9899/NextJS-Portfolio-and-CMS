@@ -15,6 +15,12 @@ const CATEGORIES: { label: string; value: string }[] = [
   { label: 'Other', value: 'OTHER' },
 ]
 
+/**
+ * Render a responsive, animated grid of project cards with category filter tabs.
+ *
+ * @param projects - Array of Project objects to display; the grid shows all projects when "ALL" is selected and otherwise filters by each project's `category`.
+ * @returns A React element containing filter tabs, an animated grid of ProjectCard items, and an empty-state message when no projects match the active category.
+ */
 export default function ProjectGrid({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState('ALL')
 

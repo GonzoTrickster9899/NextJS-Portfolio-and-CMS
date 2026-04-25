@@ -18,6 +18,16 @@ export const metadata: Metadata = {
 // ISR — revalidate every 60 seconds
 export const revalidate = 60
 
+/**
+ * Fetches and aggregates the data required to render the home page.
+ *
+ * @returns An object containing:
+ * - `cfg`: a plain object mapping site config keys (`hero_name`, `hero_title`, `hero_bio`, `github_url`, `linkedin_url`, `resume_url`) to their values.
+ * - `featuredProjects`: up to 3 projects flagged as featured, ordered by `order` ascending.
+ * - `recentPosts`: up to 3 published blog posts, ordered by `publishedAt` descending.
+ * - `experiences`: all experiences ordered by `order` ascending.
+ * - `skills`: all skills ordered by `category` ascending, then `order` ascending, then `name` ascending.
+ */
 async function getHomeData() {
   const [configs, featuredProjects, recentPosts, experiences, skills] = await Promise.all([
     prisma.siteConfig.findMany({
@@ -49,6 +59,11 @@ async function getHomeData() {
   return { cfg, featuredProjects, recentPosts, experiences, skills }
 }
 
+/**
+ * Renders the site's home page composed of hero, skills, featured projects, experience timeline, recent blog posts, and a contact call-to-action.
+ *
+ * @returns The React element representing the Home page layout containing the hero section, skills section, featured projects (if any), experience timeline (if any), recent blog posts (if any), and a CTA banner.
+ */
 export default async function HomePage() {
   const { cfg, featuredProjects, recentPosts, experiences, skills } = await getHomeData()
 

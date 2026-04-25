@@ -12,6 +12,13 @@ interface Props {
   index?: number
 }
 
+/**
+ * Render an animated project card that displays the project's image, metadata, tech tags, and optional action links.
+ *
+ * @param project - Project data used to populate the card (title, description, imageUrl, category, techStack, links, and featured flag)
+ * @param index - Optional index used to stagger the entrance animation; defaults to `0`
+ * @returns The JSX element for the project's animated card
+ */
 export default function ProjectCard({ project, index = 0 }: Props) {
   return (
     <motion.div

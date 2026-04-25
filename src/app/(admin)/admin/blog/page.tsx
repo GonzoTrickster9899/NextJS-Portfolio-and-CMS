@@ -9,6 +9,13 @@ import DeletePostButton from '@/components/admin/DeletePostButton'
 
 export const metadata: Metadata = { title: 'Manage Blog' }
 
+/**
+ * Renders the admin Blog Posts management page.
+ *
+ * Displays a header with the total post count and a "New Post" action, then shows either an empty state prompting to create the first post or a list of existing posts. Each post row includes title, published/draft badge, reading time, formatted view count and creation date, and action controls for viewing (if published), editing, and deleting the post.
+ *
+ * @returns The Blog management page UI containing header, new-post controls, and either the empty state or the list of posts with per-post actions.
+ */
 export default async function AdminBlogPage() {
   const posts = await prisma.blogPost.findMany({
     orderBy: { createdAt: 'desc' },

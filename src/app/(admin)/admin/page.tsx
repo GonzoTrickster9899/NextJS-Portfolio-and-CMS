@@ -23,6 +23,14 @@ async function getStats() {
   return { totalProjects, totalPosts, publishedPosts, unreadMessages, totalExperiences, recentMessages }
 }
 
+/**
+ * Render the admin dashboard UI containing statistics, recent messages, and quick action links.
+ *
+ * Uses fetched statistics to populate stat cards (projects, blog posts, unread messages, experiences),
+ * displays up to five recent messages with read state and relative timestamps, and provides quick action buttons.
+ *
+ * @returns The JSX element that renders the admin dashboard page.
+ */
 export default async function AdminDashboard() {
   const stats = await getStats()
 

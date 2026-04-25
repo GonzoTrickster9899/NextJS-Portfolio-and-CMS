@@ -13,6 +13,11 @@ import { Button } from '@/components/ui/button'
 // Next.js 15: params is a Promise
 type PageParams = { params: Promise<{ slug: string }> }
 
+/**
+ * Produce route parameters for all published blog posts used during static generation.
+ *
+ * @returns An array of objects each containing a `slug` property for a published blog post
+ */
 export async function generateStaticParams() {
   const posts = await prisma.blogPost.findMany({
     where: { published: true },
@@ -23,6 +28,12 @@ export async function generateStaticParams() {
 
 export const revalidate = 60
 
+/**
+ * Generate metadata for the blog post identified by the provided params.
+ *
+ * @param params - An object whose `params` promise resolves to `{ slug }`; the slug is used to look up the post.
+ * @returns The Metadata object populated from the post's title, excerpt, thumbnail, and social fields. Returns an empty object when no post is found.
+ */
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { slug } = await params
   const post = await prisma.blogPost.findUnique({
@@ -47,6 +58,16 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   }
 }
 
+/**
+ * Render the blog post page for the given slug.
+ *
+ * Fetches the published post identified by `slug`, renders its content (GitHub-flavored Markdown with fenced-code syntax highlighting), and returns the page UI.
+ *
+ * If the post does not exist, `notFound()` is invoked to produce a 404 response. As a side effect, a non-blocking POST request is sent to `/api/blog/views/{slug}` to increment the post's view count; any errors from that request are ignored.
+ *
+ * @param params - A Promise resolving to an object with a `slug` string used to locate the post.
+ * @returns The rendered blog post page as a JSX element.
+ */
 export default async function BlogPostPage({ params }: PageParams) {
   const { slug } = await params
 
@@ -128,7 +149,6 @@ export default async function BlogPostPage({ params }: PageParams) {
                   const isBlock = match !== null
                   return isBlock ? (
                     <SyntaxHighlighter
-                      // @ts-expect-error – style type mismatch between packages
                       style={oneDark}
                       language={match[1]}
                       PreTag="div"

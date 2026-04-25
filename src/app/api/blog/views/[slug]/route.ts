@@ -6,6 +6,14 @@ import { prisma } from '@/lib/prisma'
 const recentViews = new Map<string, number>()
 const DEDUPE_TTL_MS = 60 * 60 * 1000 // 1 hour
 
+/**
+ * Extracts the client's IP address from a NextRequest's headers.
+ *
+ * Prefers the first value of `x-forwarded-for`, falls back to `x-real-ip`, and
+ * returns `"unknown"` if neither header is present.
+ *
+ * @returns The client IP as a string, or `"unknown"` if it cannot be determined.
+ */
 function getClientIp(req: NextRequest): string {
   return (
     req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
@@ -14,6 +22,13 @@ function getClientIp(req: NextRequest): string {
   )
 }
 
+/**
+ * Handle POST requests to increment a blog post's view count while deduplicating repeated views from the same client IP within an hour.
+ *
+ * @param req - The incoming NextRequest; the client IP is read from `x-forwarded-for` or `x-real-ip`.
+ * @param params - Promise resolving to an object with the route `slug` identifying the blog post.
+ * @returns JSON indicating result: `{ success: true }` when the view was counted, `{ success: true, deduplicated: true }` when the increment is skipped due to a recent view from the same IP, or `{ success: false }` on error.
+ */
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }

@@ -8,7 +8,12 @@ import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = { title: 'Edit Project' }
 
-// Next.js 15: params is a Promise
+/**
+ * Render the admin "Edit Project" page for the project identified by `id`.
+ *
+ * @param params - A promise that resolves to an object with `id`, the project identifier
+ * @returns A React element containing the edit interface for the specified project. If no project is found for `id`, a 404 response is triggered.
+ */
 export default async function EditProjectPage({
   params,
 }: {
