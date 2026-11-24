@@ -3,20 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
-
-/**
- * Verifies that the current Supabase-authenticated user is the configured administrator.
- *
- * @throws Error('Unauthorized') if there is no authenticated user or the user's email does not match process.env.ADMIN_EMAIL
- */
-async function assertAdmin() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user || user.email !== process.env.ADMIN_EMAIL) throw new Error('Unauthorized')
-}
+import { assertAdmin } from '@/lib/auth/admin'
 
 const SkillSchema = z.object({
   name: z.string().min(1).max(60),

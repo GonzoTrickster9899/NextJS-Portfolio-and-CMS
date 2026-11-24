@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { uploadImage } from '@/lib/supabase/storage'
+import { getAdminUser } from '@/lib/auth/admin'
+import { uploadImage } from '@/lib/storage'
 
 /**
  * Handle an authenticated multipart image upload and return the uploaded file URL.
@@ -11,10 +11,7 @@ import { uploadImage } from '@/lib/supabase/storage'
  */
 export async function POST(req: NextRequest) {
   try {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user || user.email !== process.env.ADMIN_EMAIL) {
+    if (!(await getAdminUser())) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

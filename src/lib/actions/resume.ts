@@ -2,25 +2,10 @@
 
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
-import { createClient } from '@/lib/supabase/server'
-import { uploadResume, deleteResume } from '@/lib/supabase/storage'
+import { assertAdmin } from '@/lib/auth/admin'
+import { uploadResume, deleteResume } from '@/lib/storage'
 
 const RESUME_KEY = 'resume_url'
-
-/**
- * Ensures the current Supabase-authenticated user is the configured admin and returns that user.
- *
- * @returns The authenticated Supabase user object.
- * @throws Error if there is no authenticated user or the user's email does not match `process.env.ADMIN_EMAIL`.
- */
-async function assertAdmin() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user || user.email !== process.env.ADMIN_EMAIL) throw new Error('Unauthorized')
-  return user
-}
 
 /**
  * Retrieve the public resume PDF URL stored in the site's configuration.

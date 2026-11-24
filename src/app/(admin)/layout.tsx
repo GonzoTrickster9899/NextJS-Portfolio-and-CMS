@@ -1,6 +1,9 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { getAdminUser } from '@/lib/auth/admin'
 import AdminSidebar from '@/components/layout/AdminSidebar'
+
+// Reads the Neon Auth session, so every admin page must render per request
+export const dynamic = 'force-dynamic'
 
 /**
  * Renders the admin layout and enforces that the current user is the configured admin.
@@ -15,18 +18,12 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user || user.email !== process.env.ADMIN_EMAIL) {
-    redirect('/login')
-  }
+  const user = await getAdminUser()
+  if (!user) redirect('/login')
 
   return (
     <div className="flex min-h-screen bg-background">
-      <AdminSidebar userEmail={user.email!} />
+      <AdminSidebar userEmail={user.email} />
       <div className="flex-1 flex flex-col min-w-0">
         <main className="flex-1 p-6 lg:p-10 overflow-auto">{children}</main>
       </div>

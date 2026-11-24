@@ -1,17 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { createClient } from '@/lib/supabase/server'
-
-/**
- * Verifies the current Supabase authenticated user is the configured admin.
- *
- * @throws Error 'Unauthorized' if there is no authenticated user or the user's email does not match `process.env.ADMIN_EMAIL`.
- */
-async function assertAdmin() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user || user.email !== process.env.ADMIN_EMAIL) throw new Error('Unauthorized')
-}
+import { assertAdmin } from '@/lib/auth/admin'
 
 /**
  * Handle GET requests to return all projects to an authorized admin.

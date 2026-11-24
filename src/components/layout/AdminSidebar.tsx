@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { createClient } from '@/lib/supabase/client'
+import { signOutAction } from '@/lib/actions/auth'
 import { cn } from '@/lib/utils/cn'
 import {
   LayoutDashboard,
@@ -44,8 +44,12 @@ export default function AdminSidebar({ userEmail }: Props) {
   const router = useRouter()
 
   const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
+    try {
+      await signOutAction()
+    } catch {
+      toast.error('Sign out failed')
+      return
+    }
     toast.success('Signed out')
     router.push('/login')
     router.refresh()

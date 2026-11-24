@@ -38,7 +38,7 @@ export default async function Footer() {
               <Code2 className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-sm font-medium text-muted-foreground">
-              Built with Next.js &amp; Supabase
+              Built with Next.js &amp; Neon
             </span>
           </div>
 
