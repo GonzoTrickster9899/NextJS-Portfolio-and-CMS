@@ -168,6 +168,7 @@ export default function HeroSection({ data }: { data: HeroData }) {
               src="/hero-person.png"
               alt="Developer"
               fill
+              sizes="320px"
               className="object-contain object-bottom drop-shadow-2xl"
               priority
             />

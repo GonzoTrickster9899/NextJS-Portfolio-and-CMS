@@ -4,13 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
-
-async function assertAdmin() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user || user.email !== process.env.ADMIN_EMAIL) throw new Error('Unauthorized')
-}
+import { assertAdmin } from '@/lib/auth/admin'
 
 function calcReadingTime(content: string) {
   return Math.max(1, Math.ceil(content.trim().split(/\s+/).length / 200))

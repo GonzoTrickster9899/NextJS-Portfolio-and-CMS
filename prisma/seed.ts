@@ -58,9 +58,9 @@ async function main() {
         title: 'Portfolio CMS',
         slug: 'portfolio-cms',
         description:
-          'A full-stack portfolio and blog management system built with Next.js 14, Supabase, and Prisma. Features a custom admin dashboard, markdown blog editor, and ISR-powered public site.',
+          'A full-stack portfolio and blog management system built with Next.js 16, Neon, and Prisma. Features a custom admin dashboard, markdown blog editor, and ISR-powered public site.',
         imageUrl: 'https://placehold.co/800x450/10b981/ffffff?text=Portfolio+CMS',
-        techStack: ['Next.js', 'Supabase', 'Prisma', 'Tailwind CSS', 'TypeScript'],
+        techStack: ['Next.js', 'Neon', 'Prisma', 'Tailwind CSS', 'TypeScript'],
         githubLink: 'https://github.com/yourusername/portfolio',
         liveLink: 'https://yourportfolio.vercel.app',
         category: ProjectCategory.FULLSTACK,

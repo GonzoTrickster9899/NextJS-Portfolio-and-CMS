@@ -4,14 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
-
-async function assertAdmin() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user || user.email !== process.env.ADMIN_EMAIL) throw new Error('Unauthorized')
-  return user
-}
+import { assertAdmin } from '@/lib/auth/admin'
 
 const ProjectSchema = z.object({
   title: z.string().min(2).max(100),
